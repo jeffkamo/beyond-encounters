@@ -3,7 +3,7 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {Store} from 'react-chrome-redux';
 
-import App from './components/App';
+import App from './components/App.jsx';
 
 const proxyStore = new Store({portName: 'example'});
 

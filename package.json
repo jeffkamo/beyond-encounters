@@ -5,7 +5,7 @@
   "main": "./popup/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "start": "webpack"
   },
   "bin": {
     "setlife": "./setlife.js"
@@ -23,6 +23,7 @@
     "react": "^15.3.2",
     "react-chrome-redux": "0.0.8",
     "react-dom": "^15.3.2",
+    "react-draggable": "3.0.5",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
