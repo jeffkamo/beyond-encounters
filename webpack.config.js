@@ -5,7 +5,7 @@ module.exports = {
 		background: './background/index.js',
 		content: './content/index.js'
 	},
-		 	
+
 	output: {
 		path: 'assets',
 		filename: "[name].js",
@@ -13,7 +13,7 @@ module.exports = {
 	},
 	devServer: {
 		contentBase: ['./popup', './background', './content']
-		
+
 	},
 	watch:true,
 
@@ -29,6 +29,12 @@ module.exports = {
                 loader: 'style!css!less',
                 exclude: /node_modules/
             },
-		],	
+			{
+                test: /\.scss$/,
+                // loader: 'style!css!scss',
+                loader: 'css!sass',
+                exclude: /node_modules/
+            },
+		],
 	}
 };

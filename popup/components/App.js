@@ -10,9 +10,7 @@ class App extends Component {
 		console.log(this.props);
 	    return (
 	      <div>
-	        Click Count: {this.props.count}
-	        Setlife Chrome
-            
+	        I am thing: {this.props.count}
 	      </div>
     	);
   }

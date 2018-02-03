@@ -7,13 +7,19 @@ import App from './components/App';
 
 const proxyStore = new Store({portName: 'example'});
 
-const anchor = document.createElement('div');
-anchor.id = 'rcr-anchor';
+const id = 'beyond-encounters';
+const container = document.createElement('div');
+container.id = id;
 
-document.body.insertBefore(anchor, document.body.childNodes[0]);
+const isDDBeyond = location.host === 'www.dndbeyond.com';
+const exists = document.querySelectorAll(`#${id}`).length >= 1;
 
-render(
-  <Provider store={proxyStore}>
-    <App/>
-  </Provider>
-  , document.getElementById('rcr-anchor'));
+if (isDDBeyond && !exists) {
+    document.body.insertBefore(container, document.body.childNodes[0]);
+    render(
+        <Provider store={proxyStore}>
+            <App/>
+        </Provider>,
+        document.getElementById('beyond-encounters')
+    );
+}

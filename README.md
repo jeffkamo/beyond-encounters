@@ -1,18 +1,18 @@
-# react-chrome-redux-boilerplate
+# beyond-encounters
 
 
 ##Overview
 While other boiler plates for React chrome extensions exist, many of them contain additional dependencies or middleware which are not entirely necessary.
-react-chrome-redux-boilerplate contains the bare minimum needed to get started with Chrome Extension development using React, Redux, and React-Router.
+beyond-encounters contains the bare minimum needed to get started with Chrome Extension development using React, Redux, and React-Router.
 Install dependencies, build the webpack bundle, add the 'assets' folder as a chrome extension and you're good to go.  
 
 ## Getting Started
 
 Clone latest repo, install dependencies:
 
-	$ git clone https://github.com/brgarciarivas/react-chrome-redux-boilerplate.git
+	$ git clone https://github.com/brgarciarivas/beyond-encounters.git
 
-	$ cd react-chrome-redux-boilerplate
+	$ cd beyond-encounters
 	
 	$ npm install
 
