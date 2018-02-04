@@ -1,7 +1,11 @@
 import {combineReducers} from 'redux';
 
-import count from './start';
+import cards from './cards';
+import dock from './dock';
+import dragPort from './drag-port';
 
 export default combineReducers({
-  count
+    cards,
+    dock,
+    dragPort
 });

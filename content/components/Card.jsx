@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Draggable from 'react-draggable';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 const Backdrop = styled.div`
-    position: relative;
+    position: absolute;
 
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
     max-width: 300px;
-    max-height: 20vh;
+    max-height: 400px;
     margin-right: 4px;
     border-radius: 1px;
     overflow: hidden;
@@ -27,18 +28,27 @@ const Header = styled.div`
     font-weight: bold;
 `;
 
-const Title = styled.div`
+const Title = styled.button`
     flex: 1 1 auto;
-    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+    border: 0;
     overflow: hidden;
+
+    text-align: left;
     text-overflow: ellipsis;
+    white-space: nowrap;
+
+    background-color: transparent;
 `;
 
 const Button = styled.button`
     flex: 0 0 auto;
+    margin: 0;
+    padding: 0 4px;
+    border: 0;
 
     background-color: transparent;
-    border: 0;
 `;
 
 const Body = styled.div`
@@ -49,15 +59,26 @@ const Body = styled.div`
     box-shadow: inset 0 2px 2px -2px rgb(150, 150, 150);
 `;
 
-const Card = ({children, title}) => {
+const Card = ({children, disabled, expandable, title}) => {
+    const expandHandler = () => {
+        console.log('EXPAND!')
+    }
+
+    const closeHandler = () => {
+        console.log('CLICK')
+    }
+
     return (
-        <Draggable bounds=".app__drag-view-port">
+        <Draggable bounds=".app__drag-view-port" disabled={disabled}>
             <Backdrop>
                 <Header>
-                    <Title>{title}</Title>
+                    <Title onClick={expandHandler}>
+                        {title}
+                    </Title>
 
-                    <Button>_</Button>
-                    <Button>X</Button>
+                    <Button onClick={closeHandler}>
+                        ×
+                    </Button>
                 </Header>
 
                 {children &&
@@ -70,4 +91,8 @@ const Card = ({children, title}) => {
     )
 }
 
-export default Card
+Card.defaultProps = {
+    disabled: false
+}
+
+export default connect(null)(Card);

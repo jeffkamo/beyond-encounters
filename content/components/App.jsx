@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import styled from 'styled-components';
 
 import Card from './card.jsx'
+import Example from './example.jsx'
 
 const Dashboard = styled.div`
     position: fixed;
@@ -13,8 +14,11 @@ const Dashboard = styled.div`
     align-items: flex-start;
     height: 100vh;
     width: 100vw;
+    max-height: 100vh;
 
     z-index: 9999;
+
+    pointer-events: none;
 `
 
 const DragViewPort = styled.div`
@@ -34,56 +38,64 @@ const Dock = styled.div`
 
     background-color: rgba(230, 230, 230, 0.5);
     box-shadow: 0 0 2px rgb(150, 150, 150);
+
+    div {
+        position: relative;
+    }
 `;
 
 class App extends Component {
-  componentDidMount() {
-    //basic clicker to log redux is working across platform
-    // document.addEventListener('click', () => {
-    //   console.log('testing')
-    //   this.props.dispatch({
-    //     type: 'ADD_COUNT'
+    // componentDidMount() {
+    //   //basic clicker to log redux is working across platform
+    //   document.addEventListener('click', () => {
+    //     this.props.dispatch({
+    //       type: 'ADD_CARD'
+    //     });
     //   });
-    // });
-  }
+    // }
 
-  render() {
-    return (
-        <Dashboard>
-            <DragViewPort className="app__drag-view-port">
-                <Card title="TEST 1">
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                </Card>
+    renderDragPort() {
+        const {cards, dragPort} = this.props
+        return dragPort && dragPort.map((card, idx) => (
+            <Card title={cards[card].title} key={`card-${idx}`}>
+                <Example />
+            </Card>
+        ))
+    }
 
-                <Card title="TEST 2">
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                </Card>
+    renderDock() {
+        const {cards, dock} = this.props
+        return dock && dock.map((card, idx) => (
+           <Card
+                title={cards[card].title}
+                disabled
+                expandable
+                key={`card-${idx}`}
+            />
+        ))
+    }
 
-                <Card title="TEST 3">
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                </Card>
+    render() {
+        return (
+            <Dashboard>
+                <DragViewPort className="app__drag-view-port">
+                    {this.renderDragPort()}
+                </DragViewPort>
 
-                <Card title="TEST 4">
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                    <p>Aarakocra range the Howling Gyre, an endless storm of mighty winds and lashing rains that surrounds the tranquil realm of Aaqa in the Elemental Plane of Air. Making aerial patrols, these birdlike humanoids guard the windy borders of their home against invaders from the Elemental Plane of Earth, such as gargoyles, their sworn enemies.</p>
-                </Card>
-            </DragViewPort>
-
-            <Dock>
-                <Card title="TEST 5"></Card>
-            </Dock>
-        </Dashboard>
-    );
-  }
+                <Dock>
+                    {this.renderDock()}
+                </Dock>
+            </Dashboard>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    count: state.count
-  };
+    return {
+        cards: state.cards,
+        dock: state.dock,
+        dragPort: state.dragPort,
+    };
 };
 
 export default connect(mapStateToProps)(App);
