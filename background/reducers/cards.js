@@ -13,8 +13,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-    // case 'ADD_CARD':
-    //   return [...state, 'Beholder 3'];
     default:
         return state;
     }

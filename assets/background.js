@@ -1366,8 +1366,6 @@
 	    var action = arguments[1];
 
 	    switch (action.type) {
-	        // case 'ADD_CARD':
-	        //   return [...state, 'Beholder 3'];
 	        default:
 	            return state;
 	    }
@@ -1382,13 +1380,45 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var initialState = ['commoner'];
 
 	exports.default = function () {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	    var action = arguments[1];
 
+	    var newState = void 0;
+	    var index = void 0;
+
 	    switch (action.type) {
+	        case 'REMOVE_FROM_DOCK':
+	            newState = [].concat(_toConsumableArray(state));
+
+	            // Get card index from the state
+	            index = newState.indexOf(action.card);
+
+	            if (index > -1) {
+	                // Remove the card from the state, only if it's actually there!
+	                newState.splice(index, 1);
+	            }
+
+	            return newState;
+	            break;
+	        case 'ADD_INTO_DOCK':
+	            newState = [].concat(_toConsumableArray(state));
+
+	            // Get card index from the state
+	            index = newState.indexOf(action.card);
+
+	            if (index === -1) {
+	                // Add the card to the state, only if it wasn't there before!
+	                newState.push(action.card);
+	            }
+
+	            return newState;
+	            break;
 	        default:
 	            return state;
 	    }
@@ -1403,13 +1433,45 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var initialState = ['beholder'];
 
 	exports.default = function () {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	    var action = arguments[1];
 
+	    var newState = void 0;
+	    var index = void 0;
+
 	    switch (action.type) {
+	        case 'REMOVE_FROM_DRAG_PORT':
+	            newState = [].concat(_toConsumableArray(state));
+
+	            // Get card index from the state
+	            index = newState.indexOf(action.card);
+
+	            if (index > -1) {
+	                // Remove the card from the state, only if it's actually there!
+	                newState.splice(index, 1);
+	            }
+
+	            return newState;
+	            break;
+	        case 'ADD_INTO_DRAG_PORT':
+	            newState = [].concat(_toConsumableArray(state));
+
+	            // Get card index from the state
+	            index = newState.indexOf(action.card);
+
+	            if (index === -1) {
+	                // Add the card to the state, only if it wasn't there before!
+	                newState.push(action.card);
+	            }
+
+	            return newState;
+	            break;
 	        default:
 	            return state;
 	    }

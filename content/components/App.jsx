@@ -45,34 +45,62 @@ const Dock = styled.div`
 `;
 
 class App extends Component {
-    // componentDidMount() {
-    //   //basic clicker to log redux is working across platform
-    //   document.addEventListener('click', () => {
-    //     this.props.dispatch({
-    //       type: 'ADD_CARD'
-    //     });
-    //   });
-    // }
-
     renderDragPort() {
         const {cards, dragPort} = this.props
-        return dragPort && dragPort.map((card, idx) => (
-            <Card title={cards[card].title} key={`card-${idx}`}>
-                <Example />
-            </Card>
-        ))
+
+        return dragPort && dragPort.map((card, idx) => {
+            const collapse = this.collapseCard(card)
+
+            return (
+                <Card
+                    title={cards[card].title}
+                    key={`card-${idx}`}
+                    closeHandler={collapse}
+                >
+                    <Example />
+                </Card>
+            )
+        })
     }
 
     renderDock() {
         const {cards, dock} = this.props
-        return dock && dock.map((card, idx) => (
-           <Card
-                title={cards[card].title}
-                disabled
-                expandable
-                key={`card-${idx}`}
-            />
-        ))
+
+        return dock && dock.map((card, idx) => {
+            const expand = this.expandCard(card)
+            const close = this.removeCard(card)
+
+            return (
+               <Card
+                    title={cards[card].title}
+                    disabled
+                    expandable
+                    key={`card-${idx}`}
+                    titleHandler={expand}
+                    closeHandler={close}
+                />
+            )
+        })
+    }
+
+    collapseCard(card) {
+        return () => {
+            this.props.dispatch({type: 'REMOVE_FROM_DRAG_PORT', card})
+            this.props.dispatch({type: 'ADD_INTO_DOCK', card})
+        }
+    }
+
+    expandCard(card) {
+        return () => {
+            this.props.dispatch({type: 'REMOVE_FROM_DOCK', card})
+            this.props.dispatch({type: 'ADD_INTO_DRAG_PORT', card})
+        }
+    }
+
+    removeCard(card) {
+        return () => {
+            this.props.dispatch({type: 'REMOVE_FROM_DOCK', card})
+        }
     }
 
     render() {

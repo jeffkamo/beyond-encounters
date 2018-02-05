@@ -25571,25 +25571,24 @@
 
 	    _createClass(App, [{
 	        key: 'renderDragPort',
-
-	        // componentDidMount() {
-	        //   //basic clicker to log redux is working across platform
-	        //   document.addEventListener('click', () => {
-	        //     this.props.dispatch({
-	        //       type: 'ADD_CARD'
-	        //     });
-	        //   });
-	        // }
-
 	        value: function renderDragPort() {
+	            var _this2 = this;
+
 	            var _props = this.props,
 	                cards = _props.cards,
 	                dragPort = _props.dragPort;
 
+
 	            return dragPort && dragPort.map(function (card, idx) {
+	                var collapse = _this2.collapseCard(card);
+
 	                return _react2.default.createElement(
 	                    _card2.default,
-	                    { title: cards[card].title, key: 'card-' + idx },
+	                    {
+	                        title: cards[card].title,
+	                        key: 'card-' + idx,
+	                        closeHandler: collapse
+	                    },
 	                    _react2.default.createElement(_example2.default, null)
 	                );
 	            });
@@ -25597,18 +25596,55 @@
 	    }, {
 	        key: 'renderDock',
 	        value: function renderDock() {
+	            var _this3 = this;
+
 	            var _props2 = this.props,
 	                cards = _props2.cards,
 	                dock = _props2.dock;
 
+
 	            return dock && dock.map(function (card, idx) {
+	                var expand = _this3.expandCard(card);
+	                var close = _this3.removeCard(card);
+
 	                return _react2.default.createElement(_card2.default, {
 	                    title: cards[card].title,
 	                    disabled: true,
 	                    expandable: true,
-	                    key: 'card-' + idx
+	                    key: 'card-' + idx,
+	                    titleHandler: expand,
+	                    closeHandler: close
 	                });
 	            });
+	        }
+	    }, {
+	        key: 'collapseCard',
+	        value: function collapseCard(card) {
+	            var _this4 = this;
+
+	            return function () {
+	                _this4.props.dispatch({ type: 'REMOVE_FROM_DRAG_PORT', card: card });
+	                _this4.props.dispatch({ type: 'ADD_INTO_DOCK', card: card });
+	            };
+	        }
+	    }, {
+	        key: 'expandCard',
+	        value: function expandCard(card) {
+	            var _this5 = this;
+
+	            return function () {
+	                _this5.props.dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
+	                _this5.props.dispatch({ type: 'ADD_INTO_DRAG_PORT', card: card });
+	            };
+	        }
+	    }, {
+	        key: 'removeCard',
+	        value: function removeCard(card) {
+	            var _this6 = this;
+
+	            return function () {
+	                _this6.props.dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
+	            };
 	        }
 	    }, {
 	        key: 'render',
@@ -29470,15 +29506,9 @@
 	    var children = _ref.children,
 	        disabled = _ref.disabled,
 	        expandable = _ref.expandable,
-	        title = _ref.title;
-
-	    var expandHandler = function expandHandler() {
-	        console.log('EXPAND!');
-	    };
-
-	    var closeHandler = function closeHandler() {
-	        console.log('CLICK');
-	    };
+	        title = _ref.title,
+	        titleHandler = _ref.titleHandler,
+	        closeHandler = _ref.closeHandler;
 
 	    return _react2.default.createElement(
 	        _reactDraggable2.default,
@@ -29491,7 +29521,7 @@
 	                null,
 	                _react2.default.createElement(
 	                    Title,
-	                    { onClick: expandHandler },
+	                    { onClick: titleHandler },
 	                    title
 	                ),
 	                _react2.default.createElement(

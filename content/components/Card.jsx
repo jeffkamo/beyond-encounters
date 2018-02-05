@@ -59,20 +59,19 @@ const Body = styled.div`
     box-shadow: inset 0 2px 2px -2px rgb(150, 150, 150);
 `;
 
-const Card = ({children, disabled, expandable, title}) => {
-    const expandHandler = () => {
-        console.log('EXPAND!')
-    }
-
-    const closeHandler = () => {
-        console.log('CLICK')
-    }
-
+const Card = ({
+    children,
+    disabled,
+    expandable,
+    title,
+    titleHandler,
+    closeHandler
+}) => {
     return (
         <Draggable bounds=".app__drag-view-port" disabled={disabled}>
             <Backdrop>
                 <Header>
-                    <Title onClick={expandHandler}>
+                    <Title onClick={titleHandler}>
                         {title}
                     </Title>
 
