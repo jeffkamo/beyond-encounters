@@ -25570,9 +25570,29 @@
 	    }
 
 	    _createClass(App, [{
+	        key: 'collapseCard',
+	        value: function collapseCard(card) {
+	            var _this2 = this;
+
+	            return function () {
+	                _this2.props.dispatch({ type: 'REMOVE_FROM_DRAG_PORT', card: card });
+	                _this2.props.dispatch({ type: 'ADD_INTO_DOCK', card: card });
+	            };
+	        }
+	    }, {
+	        key: 'expandCard',
+	        value: function expandCard(card) {
+	            var _this3 = this;
+
+	            return function () {
+	                _this3.props.dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
+	                _this3.props.dispatch({ type: 'ADD_INTO_DRAG_PORT', card: card });
+	            };
+	        }
+	    }, {
 	        key: 'renderDragPort',
 	        value: function renderDragPort() {
-	            var _this2 = this;
+	            var _this4 = this;
 
 	            var _props = this.props,
 	                cards = _props.cards,
@@ -25580,14 +25600,16 @@
 
 
 	            return dragPort && dragPort.map(function (card, idx) {
-	                var collapse = _this2.collapseCard(card);
+	                var collapse = _this4.collapseCard(card);
 
 	                return _react2.default.createElement(
 	                    _card2.default,
 	                    {
+	                        buttonText: '_',
+	                        card: card,
 	                        title: cards[card].title,
 	                        key: 'card-' + idx,
-	                        closeHandler: collapse
+	                        buttonHandler: collapse
 	                    },
 	                    _react2.default.createElement(_example2.default, null)
 	                );
@@ -25596,7 +25618,7 @@
 	    }, {
 	        key: 'renderDock',
 	        value: function renderDock() {
-	            var _this3 = this;
+	            var _this5 = this;
 
 	            var _props2 = this.props,
 	                cards = _props2.cards,
@@ -25604,47 +25626,17 @@
 
 
 	            return dock && dock.map(function (card, idx) {
-	                var expand = _this3.expandCard(card);
-	                var close = _this3.removeCard(card);
+	                var expand = _this5.expandCard(card);
 
 	                return _react2.default.createElement(_card2.default, {
-	                    title: cards[card].title,
+	                    card: card,
 	                    disabled: true,
 	                    expandable: true,
 	                    key: 'card-' + idx,
-	                    titleHandler: expand,
-	                    closeHandler: close
+	                    title: cards[card].title,
+	                    titleHandler: expand
 	                });
 	            });
-	        }
-	    }, {
-	        key: 'collapseCard',
-	        value: function collapseCard(card) {
-	            var _this4 = this;
-
-	            return function () {
-	                _this4.props.dispatch({ type: 'REMOVE_FROM_DRAG_PORT', card: card });
-	                _this4.props.dispatch({ type: 'ADD_INTO_DOCK', card: card });
-	            };
-	        }
-	    }, {
-	        key: 'expandCard',
-	        value: function expandCard(card) {
-	            var _this5 = this;
-
-	            return function () {
-	                _this5.props.dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
-	                _this5.props.dispatch({ type: 'ADD_INTO_DRAG_PORT', card: card });
-	            };
-	        }
-	    }, {
-	        key: 'removeCard',
-	        value: function removeCard(card) {
-	            var _this6 = this;
-
-	            return function () {
-	                _this6.props.dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
-	            };
 	        }
 	    }, {
 	        key: 'render',
@@ -29503,12 +29495,20 @@
 	var Body = _styledComponents2.default.div(_templateObject5);
 
 	var Card = function Card(_ref) {
-	    var children = _ref.children,
+	    var buttonText = _ref.buttonText,
+	        card = _ref.card,
+	        children = _ref.children,
 	        disabled = _ref.disabled,
+	        dispatch = _ref.dispatch,
 	        expandable = _ref.expandable,
 	        title = _ref.title,
-	        titleHandler = _ref.titleHandler,
-	        closeHandler = _ref.closeHandler;
+	        buttonHandler = _ref.buttonHandler,
+	        titleHandler = _ref.titleHandler;
+
+	    var removeCard = function removeCard() {
+	        dispatch({ type: 'REMOVE_FROM_DRAG_PORT', card: card });
+	        dispatch({ type: 'REMOVE_FROM_DOCK', card: card });
+	    };
 
 	    return _react2.default.createElement(
 	        _reactDraggable2.default,
@@ -29526,7 +29526,12 @@
 	                ),
 	                _react2.default.createElement(
 	                    Button,
-	                    { onClick: closeHandler },
+	                    { onClick: buttonHandler },
+	                    buttonText
+	                ),
+	                _react2.default.createElement(
+	                    Button,
+	                    { onClick: removeCard },
 	                    '\xD7'
 	                )
 	            ),

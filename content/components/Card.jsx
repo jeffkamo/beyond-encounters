@@ -60,13 +60,23 @@ const Body = styled.div`
 `;
 
 const Card = ({
+    buttonText,
+    card,
     children,
     disabled,
+    dispatch,
     expandable,
     title,
-    titleHandler,
-    closeHandler
+
+    // Handlers
+    buttonHandler,
+    titleHandler
 }) => {
+    const removeCard = () => {
+        dispatch({type: 'REMOVE_FROM_DRAG_PORT', card})
+        dispatch({type: 'REMOVE_FROM_DOCK', card})
+    }
+
     return (
         <Draggable bounds=".app__drag-view-port" disabled={disabled}>
             <Backdrop>
@@ -75,7 +85,11 @@ const Card = ({
                         {title}
                     </Title>
 
-                    <Button onClick={closeHandler}>
+                    <Button onClick={buttonHandler}>
+                        {buttonText}
+                    </Button>
+
+                    <Button onClick={removeCard}>
                         ×
                     </Button>
                 </Header>

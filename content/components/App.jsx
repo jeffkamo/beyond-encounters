@@ -45,44 +45,6 @@ const Dock = styled.div`
 `;
 
 class App extends Component {
-    renderDragPort() {
-        const {cards, dragPort} = this.props
-
-        return dragPort && dragPort.map((card, idx) => {
-            const collapse = this.collapseCard(card)
-
-            return (
-                <Card
-                    title={cards[card].title}
-                    key={`card-${idx}`}
-                    closeHandler={collapse}
-                >
-                    <Example />
-                </Card>
-            )
-        })
-    }
-
-    renderDock() {
-        const {cards, dock} = this.props
-
-        return dock && dock.map((card, idx) => {
-            const expand = this.expandCard(card)
-            const close = this.removeCard(card)
-
-            return (
-               <Card
-                    title={cards[card].title}
-                    disabled
-                    expandable
-                    key={`card-${idx}`}
-                    titleHandler={expand}
-                    closeHandler={close}
-                />
-            )
-        })
-    }
-
     collapseCard(card) {
         return () => {
             this.props.dispatch({type: 'REMOVE_FROM_DRAG_PORT', card})
@@ -97,10 +59,43 @@ class App extends Component {
         }
     }
 
-    removeCard(card) {
-        return () => {
-            this.props.dispatch({type: 'REMOVE_FROM_DOCK', card})
-        }
+    renderDragPort() {
+        const {cards, dragPort} = this.props
+
+        return dragPort && dragPort.map((card, idx) => {
+            const collapse = this.collapseCard(card)
+
+            return (
+                <Card
+                    buttonText="_"
+                    card={card}
+                    title={cards[card].title}
+                    key={`card-${idx}`}
+                    buttonHandler={collapse}
+                >
+                    <Example />
+                </Card>
+            )
+        })
+    }
+
+    renderDock() {
+        const {cards, dock} = this.props
+
+        return dock && dock.map((card, idx) => {
+            const expand = this.expandCard(card)
+
+            return (
+               <Card
+                    card={card}
+                    disabled
+                    expandable
+                    key={`card-${idx}`}
+                    title={cards[card].title}
+                    titleHandler={expand}
+                />
+            )
+        })
     }
 
     render() {
