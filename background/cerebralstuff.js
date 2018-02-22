@@ -8,23 +8,35 @@ import PopupMenu from './components/PopupMenu'
 import addParticipant from './signals/addParticipant'
 import removeParticipant from './signals/removeParticipant'
 import editInitiative from './signals/editInitiative'
+import addToOrder from './signals/addToOrder'
+import removeOrderGroup from './signals/removeOrderGroup'
+import removeParticipantFromOrder from './signals/removeParticipantFromOrder'
+import setInitiative from './signals/setInitiative'
+import setOrderName from './signals/setOrderName'
 
 const storage = StorageModule({
   target: localStorage,
   json: true,
   sync: {
     'participants': 'participants',
-    'bestiary': 'bestiary'
+    'bestiary': 'bestiary',
+    'order': 'order',
   },
 })
 
 const app = Module({
   modules: {storage},
   state: {
+    order: {},
     participants: [],
     bestiary: {'giant-poisonous-snake': {url: 'http://google.com/#'}}
   },
   signals: {
+    addToOrder,
+    removeOrderGroup,
+    removeParticipantFromOrder,
+    setInitiative,
+    setOrderName,
     addParticipant,
     removeParticipant,
     editInitiative
@@ -48,7 +60,7 @@ window.CEREBRAL = controller
 const App = () => {
   return (
     <Container controller={controller}>
-      <PopupMenu />
+      <PopupMenu/>
     </Container>
   )
 }
@@ -57,7 +69,7 @@ window.Menu = App
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
-    console.log('inside event listner' , request, sender, sendResponse)
+    console.log('inside event listner', request, sender, sendResponse)
     const {initiative, dndBeyondId, name, hp} = request.msg
     window.CEREBRAL.getSignal('addParticipant')({initiative, dndBeyondId, name, hp})
   }

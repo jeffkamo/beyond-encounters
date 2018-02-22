@@ -4130,13 +4130,33 @@
 
 	var _addParticipant2 = _interopRequireDefault(_addParticipant);
 
-	var _removeParticipant = __webpack_require__(166);
+	var _removeParticipant = __webpack_require__(169);
 
 	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
 
 	var _editInitiative = __webpack_require__(170);
 
 	var _editInitiative2 = _interopRequireDefault(_editInitiative);
+
+	var _addToOrder = __webpack_require__(171);
+
+	var _addToOrder2 = _interopRequireDefault(_addToOrder);
+
+	var _removeOrderGroup = __webpack_require__(172);
+
+	var _removeOrderGroup2 = _interopRequireDefault(_removeOrderGroup);
+
+	var _removeParticipantFromOrder = __webpack_require__(173);
+
+	var _removeParticipantFromOrder2 = _interopRequireDefault(_removeParticipantFromOrder);
+
+	var _setInitiative = __webpack_require__(174);
+
+	var _setInitiative2 = _interopRequireDefault(_setInitiative);
+
+	var _setOrderName = __webpack_require__(175);
+
+	var _setOrderName2 = _interopRequireDefault(_setOrderName);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4145,17 +4165,24 @@
 	  json: true,
 	  sync: {
 	    'participants': 'participants',
-	    'bestiary': 'bestiary'
+	    'bestiary': 'bestiary',
+	    'order': 'order'
 	  }
 	});
 
 	var app = (0, _cerebral.Module)({
 	  modules: { storage: storage },
 	  state: {
+	    order: {},
 	    participants: [],
 	    bestiary: { 'giant-poisonous-snake': { url: 'http://google.com/#' } }
 	  },
 	  signals: {
+	    addToOrder: _addToOrder2.default,
+	    removeOrderGroup: _removeOrderGroup2.default,
+	    removeParticipantFromOrder: _removeParticipantFromOrder2.default,
+	    setInitiative: _setInitiative2.default,
+	    setOrderName: _setOrderName2.default,
 	    addParticipant: _addParticipant2.default,
 	    removeParticipant: _removeParticipant2.default,
 	    editInitiative: _editInitiative2.default
@@ -14620,7 +14647,13 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _templateObject = _taggedTemplateLiteral(['participants'], ['participants']),
-	    _templateObject2 = _taggedTemplateLiteral(['removeParticipant'], ['removeParticipant']);
+	    _templateObject2 = _taggedTemplateLiteral(['order'], ['order']),
+	    _templateObject3 = _taggedTemplateLiteral(['removeParticipant'], ['removeParticipant']),
+	    _templateObject4 = _taggedTemplateLiteral(['addToOrder'], ['addToOrder']),
+	    _templateObject5 = _taggedTemplateLiteral(['removeOrderGroup'], ['removeOrderGroup']),
+	    _templateObject6 = _taggedTemplateLiteral(['removeParticipantFromOrder'], ['removeParticipantFromOrder']),
+	    _templateObject7 = _taggedTemplateLiteral(['setInitiative'], ['setInitiative']),
+	    _templateObject8 = _taggedTemplateLiteral(['setOrderName'], ['setOrderName']);
 
 	var _react = __webpack_require__(81);
 
@@ -14642,7 +14675,14 @@
 
 	exports.default = (0, _react3.connect)({
 	  participants: (0, _tags.state)(_templateObject),
-	  removeParticipant: (0, _tags.signal)(_templateObject2)
+	  order: (0, _tags.state)(_templateObject2),
+	  removeParticipant: (0, _tags.signal)(_templateObject3),
+	  addToOrder: (0, _tags.signal)(_templateObject4),
+	  removeOrderGroup: (0, _tags.signal)(_templateObject5),
+	  removeParticipantFromOrder: (0, _tags.signal)(_templateObject6),
+	  setInitiative: (0, _tags.signal)(_templateObject7),
+	  setOrderName: (0, _tags.signal)(_templateObject8)
+
 	}, function (_React$Component) {
 	  _inherits(PopupMenu, _React$Component);
 
@@ -14657,6 +14697,7 @@
 	    value: function render() {
 	      var _this2 = this;
 
+	      var order = this.props.order;
 	      var divStyle = { width: '500px' };
 	      return _react2.default.createElement(
 	        'div',
@@ -14679,7 +14720,53 @@
 	                  return _this2.props.removeParticipant({ id: item.id });
 	                } },
 	              'REMOVE'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: function onClick() {
+	                  return _this2.props.addToOrder({ id: item.id });
+	                } },
+	              'ADD TO ORDER'
 	            )
+	          );
+	        }),
+	        Object.keys(order).map(function (key) {
+	          return _react2.default.createElement(
+	            'div',
+	            { key: key },
+	            key,
+	            ' |',
+	            order[key].initiative,
+	            ' |',
+	            order[key].name,
+	            ' |',
+	            order[key].ids.map(function (item, index) {
+	              return _react2.default.createElement(
+	                'span',
+	                { key: index },
+	                item,
+	                _react2.default.createElement(
+	                  'button',
+	                  { onClick: function onClick() {
+	                      return _this2.props.removeParticipantFromOrder({ id: item });
+	                    } },
+	                  'REMOVE participants from order'
+	                )
+	              );
+	            }),
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: function onClick() {
+	                  return _this2.props.removeOrderGroup({ id: key });
+	                } },
+	              'REMOVE ORDER'
+	            ),
+	            _react2.default.createElement('input', { value: order[key].initiative, onChange: function onChange(event) {
+	                return _this2.props.setInitiative({ id: key, initiative: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { value: key, onChange: function onChange(event) {
+	                return _this2.props.setOrderName({ id: key, name: event.target.value });
+	              } })
 	          );
 	        })
 	      );
@@ -14698,7 +14785,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var uuidv4 = __webpack_require__(167);
+	var uuidv4 = __webpack_require__(166);
 
 	exports.default = [function addParticipant(_ref) {
 	  var state = _ref.state,
@@ -14715,31 +14802,10 @@
 
 /***/ }),
 /* 166 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [function removeParticipant(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-
-	  var participants = state.get('participants');
-	  participants = participants.filter(function (_ref2) {
-	    var id = _ref2.id;
-	    return props.id !== id;
-	  });
-	  state.set('participants', participants);
-	}];
-
-/***/ }),
-/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var rng = __webpack_require__(168);
-	var bytesToUuid = __webpack_require__(169);
+	var rng = __webpack_require__(167);
+	var bytesToUuid = __webpack_require__(168);
 
 	function v4(options, buf, offset) {
 	  var i = buf && offset || 0;
@@ -14770,7 +14836,7 @@
 
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, exports) {
 
 	// Unique ID creation requires a high quality random # generator.  In the
@@ -14808,7 +14874,7 @@
 
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, exports) {
 
 	/**
@@ -14837,6 +14903,27 @@
 
 
 /***/ }),
+/* 169 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function removeParticipant(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var participants = state.get('participants');
+	  participants = participants.filter(function (_ref2) {
+	    var id = _ref2.id;
+	    return props.id !== id;
+	  });
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
 /* 170 */
 /***/ (function(module, exports) {
 
@@ -14858,6 +14945,1024 @@
 	  participants[foundIndex].initiative = initiative;
 	  state.set('participants', participants);
 	}];
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	exports.default = [function addToOrder(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+	  var id = props.id;
+
+	  var order = state.get('order');
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  var selectedParticipant = participants[foundIndex];
+
+	  order[selectedParticipant.dndBeyondId] ? order[selectedParticipant.dndBeyondId].ids.push(id) : order[selectedParticipant.dndBeyondId] = {
+	    ids: [id],
+	    name: selectedParticipant.name,
+	    initiative: 0
+	  };
+
+	  order[selectedParticipant.dndBeyondId].ids = removeDuplicateIds(order[selectedParticipant.dndBeyondId].ids);
+
+	  state.set('order', order);
+	}];
+
+
+	function removeDuplicateIds(ids) {
+	  return [].concat(_toConsumableArray(new Set(ids)));
+	}
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function removeOrderGroup(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var order = state.get('order');
+	  delete order[props.id];
+	  state.set('order', order);
+	}];
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function removeParticipantFromOrder(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var order = state.get('order');
+
+	  Object.keys(order).forEach(function (orderKey) {
+	    order[orderKey].ids = order[orderKey].ids.filter(function (id) {
+	      return id !== props.id;
+	    });
+	  });
+
+	  state.set('order', order);
+	}];
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _templateObject = _taggedTemplateLiteral(['order.', '.initiative'], ['order.', '.initiative']),
+	    _templateObject2 = _taggedTemplateLiteral(['id'], ['id']),
+	    _templateObject3 = _taggedTemplateLiteral(['initiative'], ['initiative']);
+
+	var _operators = __webpack_require__(341);
+
+	var _tags = __webpack_require__(125);
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var uuidv4 = __webpack_require__(166);
+	exports.default = [(0, _operators.set)((0, _tags.state)(_templateObject, (0, _tags.props)(_templateObject2)), (0, _tags.props)(_templateObject3))];
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function setOrderName(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+	  var id = props.id,
+	      name = props.name;
+
+	  var order = state.get('order');
+	  order[name] = Object.assign({}, order[id]);
+	  delete order[id];
+	  state.set('order', order);
+	}];
+
+/***/ }),
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _debounce = __webpack_require__(342);
+
+	Object.defineProperty(exports, 'debounce', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_debounce).default;
+	  }
+	});
+
+	var _when = __webpack_require__(345);
+
+	Object.defineProperty(exports, 'when', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_when).default;
+	  }
+	});
+
+	var _wait = __webpack_require__(346);
+
+	Object.defineProperty(exports, 'wait', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_wait).default;
+	  }
+	});
+
+	var _equals = __webpack_require__(347);
+
+	Object.defineProperty(exports, 'equals', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_equals).default;
+	  }
+	});
+
+	var _concat = __webpack_require__(348);
+
+	Object.defineProperty(exports, 'concat', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_concat).default;
+	  }
+	});
+
+	var _increment = __webpack_require__(349);
+
+	Object.defineProperty(exports, 'increment', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_increment).default;
+	  }
+	});
+
+	var _merge = __webpack_require__(350);
+
+	Object.defineProperty(exports, 'merge', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_merge).default;
+	  }
+	});
+
+	var _pop = __webpack_require__(351);
+
+	Object.defineProperty(exports, 'pop', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_pop).default;
+	  }
+	});
+
+	var _push = __webpack_require__(352);
+
+	Object.defineProperty(exports, 'push', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_push).default;
+	  }
+	});
+
+	var _set = __webpack_require__(353);
+
+	Object.defineProperty(exports, 'set', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_set).default;
+	  }
+	});
+
+	var _shift = __webpack_require__(354);
+
+	Object.defineProperty(exports, 'shift', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_shift).default;
+	  }
+	});
+
+	var _splice = __webpack_require__(355);
+
+	Object.defineProperty(exports, 'splice', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_splice).default;
+	  }
+	});
+
+	var _toggle = __webpack_require__(356);
+
+	Object.defineProperty(exports, 'toggle', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_toggle).default;
+	  }
+	});
+
+	var _unset = __webpack_require__(357);
+
+	Object.defineProperty(exports, 'unset', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_unset).default;
+	  }
+	});
+
+	var _unshift = __webpack_require__(358);
+
+	Object.defineProperty(exports, 'unshift', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_unshift).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 342 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _factories = __webpack_require__(343);
+
+	Object.defineProperty(exports, 'default', {
+	  enumerable: true,
+	  get: function get() {
+	    return _factories.debounce;
+	  }
+	});
+	//# sourceMappingURL=debounce.js.map
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _debounce = __webpack_require__(344);
+
+	Object.defineProperty(exports, 'debounce', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_debounce).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 344 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function createDebounce(time, execution) {
+	  function debounce(_ref) {
+	    var path = _ref.path;
+
+	    return new Promise(function (resolve) {
+	      if (execution.timer) {
+	        execution.resolve(path.discard());
+	        clearTimeout(execution.timer);
+	      }
+
+	      execution.timer = setTimeout(function () {
+	        execution.resolve(path.continue());
+	        execution.timer = null;
+	        execution.resolve = null;
+	      }, time);
+	      execution.resolve = resolve;
+	    });
+	  }
+	  debounce.displayName = 'debounce - ' + time + 'ms';
+
+	  return debounce;
+	}
+
+	function debounceFactory(time) {
+	  // New execution on every call
+	  var execution = { timer: null, resolve: null };
+
+	  return createDebounce(time, execution);
+	}
+
+	debounceFactory.shared = function () {
+	  // Shared execution
+	  var execution = { timer: null, resolve: null };
+
+	  return function debounceSharedFactory(time) {
+	    return createDebounce(time, execution);
+	  };
+	};
+
+	exports.default = debounceFactory;
+	//# sourceMappingURL=debounce.js.map
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _tags = __webpack_require__(125);
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var HELP_URL = 'http://cerebraljs.com/docs/api/operators.html#when';
+
+	function whenFactory() {
+	  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	    args[_key] = arguments[_key];
+	  }
+
+	  var whenFunc = args.length > 1 ? args[args.length - 1] : null;
+	  var valueTemplates = args.length > 1 ? args.slice(0, -1) : args;
+	  function when(_ref) {
+	    var path = _ref.path,
+	        resolve = _ref.resolve;
+
+	    if (valueTemplates.length > 0 && !(valueTemplates[0] instanceof _tags.Tag)) {
+	      throw new Error('Cerebral operator.when: You have to use the STATE, MODULE or PROPS tag as values, see: ' + HELP_URL);
+	    }
+	    if (!path || !path.true || !path.false) {
+	      throw new Error('Cerebral operator.when: true/false paths need to be provided, see: http://cerebraljs.com/docs/api/operators.html#when');
+	    }
+	    var values = valueTemplates.map(function (value) {
+	      return resolve.value(value);
+	    });
+	    var isTrue = Boolean(whenFunc ? whenFunc.apply(undefined, _toConsumableArray(values)) : values[0]);
+
+	    return isTrue ? path.true() : path.false();
+	  }
+
+	  when.displayName = 'operator.when(' + args.filter(function (arg) {
+	    return typeof arg !== 'function';
+	  }).map(function (arg) {
+	    return String(arg);
+	  }).join(',') + ')';
+
+	  return when;
+	}
+
+	exports.default = whenFactory;
+	//# sourceMappingURL=when.js.map
+
+/***/ }),
+/* 346 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function waitFactory(ms) {
+	  function wait(_ref) {
+	    var path = _ref.path;
+
+	    return new Promise(function (resolve) {
+	      setTimeout(function () {
+	        return resolve(path ? path.continue() : null);
+	      }, ms);
+	    });
+	  }
+	  wait.displayName = 'wait - ' + ms + 'ms';
+
+	  return wait;
+	}
+
+	exports.default = waitFactory;
+	//# sourceMappingURL=wait.js.map
+
+/***/ }),
+/* 347 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function equalsFactory(target) {
+	  function equals(_ref) {
+	    var path = _ref.path,
+	        resolve = _ref.resolve;
+
+	    if (!resolve.isTag(target, 'state', 'props', 'module')) {
+	      throw new Error('Cerebral operator.equals: You have to use the STATE, PROPS or MODULE tag as first argument');
+	    }
+
+	    var targetValue = resolve.value(target);
+
+	    return path[targetValue] ? path[targetValue]() : path.otherwise();
+	  }
+
+	  equals.displayName = 'operator.equals(' + String(target) + ')';
+
+	  return equals;
+	}
+
+	exports.default = equalsFactory;
+	//# sourceMappingURL=equals.js.map
+
+/***/ }),
+/* 348 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target, value) {
+	  function concat(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.concat: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    context[target.type].concat(context.resolve.path(target), context.resolve.value(value));
+	  }
+
+	  concat.displayName = 'operator.concat(' + String(target) + ', ' + String(value) + ')';
+
+	  return concat;
+	};
+	//# sourceMappingURL=concat.js.map
+
+/***/ }),
+/* 349 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+	  function increment(_ref) {
+	    var state = _ref.state,
+	        module = _ref.module,
+	        props = _ref.props,
+	        resolve = _ref.resolve;
+
+	    if (!resolve.isTag(target, 'state', 'props', 'module')) {
+	      throw new Error('Cerebral operator.increment: You have to use the STATE, MODULE or PROPS tag as first argument');
+	    }
+
+	    var resolvedValue = resolve.value(value);
+
+	    if (!Number.isInteger(resolvedValue)) {
+	      throw new Error('Cerebral operator.increment: You must increment by integer values');
+	    }
+
+	    var invalidStateMsg = 'Cerebral operator.increment: You must increment integer values';
+	    if (target.type === 'state') {
+	      state.increment(resolve.path(target), resolvedValue);
+	    } else if (target.type === 'module') {
+	      module.increment(resolve.path(target), resolvedValue);
+	    } else {
+	      var result = Object.assign({}, props);
+	      var parts = resolve.path(target).split('.');
+	      var key = parts.pop();
+	      var targetObj = parts.reduce(function (target, key) {
+	        return target[key] = Object.assign({}, target[key] || {});
+	      }, result);
+
+	      if (!Number.isInteger(targetObj[key])) {
+	        throw new Error(invalidStateMsg);
+	      }
+
+	      targetObj[key] += resolvedValue;
+
+	      return result;
+	    }
+	  }
+
+	  increment.displayName = 'operator.increment(' + String(target) + ', ' + String(value) + ')';
+
+	  return increment;
+	};
+	//# sourceMappingURL=increment.js.map
+
+/***/ }),
+/* 350 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    values[_key - 1] = arguments[_key];
+	  }
+
+	  function merge(context) {
+	    var _context$target$type;
+
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.merge: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    (_context$target$type = context[target.type]).merge.apply(_context$target$type, [context.resolve.path(target)].concat(_toConsumableArray(values.map(function (value) {
+	      if (context.resolve.isTag(value)) {
+	        return context.resolve.value(value);
+	      }
+
+	      return Object.keys(value).reduce(function (currentValue, key) {
+	        currentValue[key] = context.resolve.value(value[key]);
+
+	        return currentValue;
+	      }, {});
+	    }))));
+	  }
+
+	  merge.displayName = 'operator.merge(' + String(target) + ', ' + values.map(function (value) {
+	    return String(value);
+	  }).join(',') + ')';
+
+	  return merge;
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	//# sourceMappingURL=merge.js.map
+
+/***/ }),
+/* 351 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  function pop(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.pop: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    context[target.type].pop(context.resolve.path(target));
+	  }
+
+	  pop.displayName = 'operator.pop(' + String(target) + ')';
+
+	  return pop;
+	};
+	//# sourceMappingURL=pop.js.map
+
+/***/ }),
+/* 352 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target, value) {
+	  function push(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.push: You have to use the STATE TAG as first argument');
+	    }
+
+	    context[target.type].push(context.resolve.path(target), context.resolve.value(value));
+	  }
+
+	  push.displayName = 'operator.push(' + String(target) + ')';
+
+	  return push;
+	};
+	//# sourceMappingURL=push.js.map
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target, value) {
+	  function set(_ref) {
+	    var state = _ref.state,
+	        module = _ref.module,
+	        props = _ref.props,
+	        resolve = _ref.resolve;
+
+	    if (!resolve.isTag(target, 'state', 'props', 'module')) {
+	      throw new Error('Cerebral operator.set: You have to use the STATE, PROPS or MODULE tag as first argument');
+	    }
+
+	    var resolvedValue = resolve.value(value);
+
+	    if (!resolve.isResolveValue(value) && (0, _utils.isObject)(value)) {
+	      resolvedValue = Object.assign({}, resolvedValue);
+	    } else if (!resolve.isResolveValue(value) && Array.isArray(value)) {
+	      resolvedValue = resolvedValue.slice();
+	    }
+
+	    if (target.type === 'state') {
+	      state.set(resolve.path(target), resolvedValue);
+	    } else if (target.type === 'module') {
+	      module.set(resolve.path(target), resolvedValue);
+	    } else {
+	      var result = Object.assign({}, props);
+	      var parts = resolve.path(target).split('.');
+	      var key = parts.pop();
+	      var targetObj = parts.reduce(function (target, key) {
+	        return target[key] = Object.assign({}, target[key] || {});
+	      }, result);
+	      targetObj[key] = resolvedValue;
+
+	      return result;
+	    }
+	  }
+
+	  set.displayName = 'operator.set(' + String(target) + ', ' + String(value) + ')';
+
+	  return set;
+	};
+
+	var _utils = __webpack_require__(124);
+	//# sourceMappingURL=set.js.map
+
+/***/ }),
+/* 354 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  function shift(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.shift: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    context[target.type].shift(context.resolve.path(target));
+	  }
+
+	  shift.displayName = 'operator.shift(' + String(target) + ')';
+
+	  return shift;
+	};
+	//# sourceMappingURL=shift.js.map
+
+/***/ }),
+/* 355 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	    args[_key - 1] = arguments[_key];
+	  }
+
+	  function splice(context) {
+	    var _context$target$type;
+
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.splice: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    var spliceArgs = args.map(function (arg) {
+	      return context.resolve.value(arg);
+	    });
+
+	    (_context$target$type = context[target.type]).splice.apply(_context$target$type, [context.resolve.path(target)].concat(_toConsumableArray(spliceArgs)));
+	  }
+
+	  splice.displayName = 'operator.splice(' + String(target) + ', ' + args.map(function (arg) {
+	    return String(arg);
+	  }).join(',') + ')';
+
+	  return splice;
+	};
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	//# sourceMappingURL=splice.js.map
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  function toggle(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.toggle: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    var path = context.resolve.path(target);
+
+	    context[target.type].toggle(path);
+	  }
+
+	  toggle.displayName = 'operator.toggle(' + String(target) + ')';
+
+	  return toggle;
+	};
+	//# sourceMappingURL=toggle.js.map
+
+/***/ }),
+/* 357 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target) {
+	  function unset(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.unset: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    context[target.type].unset(context.resolve.path(target));
+	  }
+
+	  unset.displayName = 'operator.unset(' + String(target) + ')';
+
+	  return unset;
+	};
+	//# sourceMappingURL=unset.js.map
+
+/***/ }),
+/* 358 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (target, value) {
+	  function unshift(context) {
+	    if (!context.resolve.isTag(target, 'state', 'module')) {
+	      throw new Error('Cerebral operator.unshift: You have to use the STATE or MODULE tag as first argument');
+	    }
+
+	    context[target.type].unshift(context.resolve.path(target), context.resolve.value(value));
+	  }
+
+	  unshift.displayName = 'operator.unshift(' + String(target) + ', ' + String(value) + ')';
+
+	  return unshift;
+	};
+	//# sourceMappingURL=unshift.js.map
 
 /***/ })
 /******/ ]);
