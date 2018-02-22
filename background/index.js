@@ -4,8 +4,6 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { alias, wrapStore } from 'react-chrome-redux';
 
-
-
 const logger = createLogger({
     level: 'info',
     collapsed: true
@@ -41,3 +39,8 @@ chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
   console.log('content script injected')
   chrome.tabs.executeScript(null, {file: "content.js"});
 });
+
+
+
+
+require('./cerebralstuff')()
