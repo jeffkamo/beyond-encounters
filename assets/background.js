@@ -4154,9 +4154,41 @@
 
 	var _setInitiative2 = _interopRequireDefault(_setInitiative);
 
-	var _setOrderName = __webpack_require__(175);
+	var _setOrderName = __webpack_require__(193);
 
 	var _setOrderName2 = _interopRequireDefault(_setOrderName);
+
+	var _setName = __webpack_require__(194);
+
+	var _setName2 = _interopRequireDefault(_setName);
+
+	var _setMaxHp = __webpack_require__(195);
+
+	var _setMaxHp2 = _interopRequireDefault(_setMaxHp);
+
+	var _setCurrentHp = __webpack_require__(196);
+
+	var _setCurrentHp2 = _interopRequireDefault(_setCurrentHp);
+
+	var _applyDamage = __webpack_require__(197);
+
+	var _applyDamage2 = _interopRequireDefault(_applyDamage);
+
+	var _applyHealing = __webpack_require__(198);
+
+	var _applyHealing2 = _interopRequireDefault(_applyHealing);
+
+	var _setTempHp = __webpack_require__(199);
+
+	var _setTempHp2 = _interopRequireDefault(_setTempHp);
+
+	var _setStatus = __webpack_require__(200);
+
+	var _setStatus2 = _interopRequireDefault(_setStatus);
+
+	var _addBestiary = __webpack_require__(201);
+
+	var _addBestiary2 = _interopRequireDefault(_addBestiary);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4185,7 +4217,15 @@
 	    setOrderName: _setOrderName2.default,
 	    addParticipant: _addParticipant2.default,
 	    removeParticipant: _removeParticipant2.default,
-	    editInitiative: _editInitiative2.default
+	    editInitiative: _editInitiative2.default,
+	    setName: _setName2.default,
+	    setMaxHp: _setMaxHp2.default,
+	    setCurrentHp: _setCurrentHp2.default,
+	    applyDamage: _applyDamage2.default,
+	    applyHealing: _applyHealing2.default,
+	    setTempHp: _setTempHp2.default,
+	    setStatus: _setStatus2.default,
+	    addBestiary: _addBestiary2.default
 	  }
 	});
 
@@ -4218,9 +4258,11 @@
 	      initiative = _request$msg.initiative,
 	      dndBeyondId = _request$msg.dndBeyondId,
 	      name = _request$msg.name,
-	      hp = _request$msg.hp;
+	      hp = _request$msg.hp,
+	      statBlockData = _request$msg.statBlockData;
 
-	  window.CEREBRAL.getSignal('addParticipant')({ initiative: initiative, dndBeyondId: dndBeyondId, name: name, hp: hp });
+
+	  hp ? window.CEREBRAL.getSignal('addParticipant')({ initiative: initiative, dndBeyondId: dndBeyondId, name: name, hp: hp, statBlockData: statBlockData }) : window.CEREBRAL.getSignal('addBestiary')({ dndBeyondId: dndBeyondId, statBlockData: statBlockData });
 	});
 
 /***/ }),
@@ -14653,7 +14695,15 @@
 	    _templateObject5 = _taggedTemplateLiteral(['removeOrderGroup'], ['removeOrderGroup']),
 	    _templateObject6 = _taggedTemplateLiteral(['removeParticipantFromOrder'], ['removeParticipantFromOrder']),
 	    _templateObject7 = _taggedTemplateLiteral(['setInitiative'], ['setInitiative']),
-	    _templateObject8 = _taggedTemplateLiteral(['setOrderName'], ['setOrderName']);
+	    _templateObject8 = _taggedTemplateLiteral(['setOrderName'], ['setOrderName']),
+	    _templateObject9 = _taggedTemplateLiteral(['setName'], ['setName']),
+	    _templateObject10 = _taggedTemplateLiteral(['setMaxHp'], ['setMaxHp']),
+	    _templateObject11 = _taggedTemplateLiteral(['setCurrentHp'], ['setCurrentHp']),
+	    _templateObject12 = _taggedTemplateLiteral(['applyDamage'], ['applyDamage']),
+	    _templateObject13 = _taggedTemplateLiteral(['applyHealing'], ['applyHealing']),
+	    _templateObject14 = _taggedTemplateLiteral(['setTempHp'], ['setTempHp']),
+	    _templateObject15 = _taggedTemplateLiteral(['setStatus'], ['setStatus']),
+	    _templateObject16 = _taggedTemplateLiteral(['addBestiary'], ['addBestiary']);
 
 	var _react = __webpack_require__(81);
 
@@ -14681,8 +14731,15 @@
 	  removeOrderGroup: (0, _tags.signal)(_templateObject5),
 	  removeParticipantFromOrder: (0, _tags.signal)(_templateObject6),
 	  setInitiative: (0, _tags.signal)(_templateObject7),
-	  setOrderName: (0, _tags.signal)(_templateObject8)
-
+	  setOrderName: (0, _tags.signal)(_templateObject8),
+	  setName: (0, _tags.signal)(_templateObject9),
+	  setMaxHp: (0, _tags.signal)(_templateObject10),
+	  setCurrentHp: (0, _tags.signal)(_templateObject11),
+	  applyDamage: (0, _tags.signal)(_templateObject12),
+	  applyHealing: (0, _tags.signal)(_templateObject13),
+	  setTempHp: (0, _tags.signal)(_templateObject14),
+	  setStatus: (0, _tags.signal)(_templateObject15),
+	  addBestiary: (0, _tags.signal)(_templateObject16)
 	}, function (_React$Component) {
 	  _inherits(PopupMenu, _React$Component);
 
@@ -14714,6 +14771,8 @@
 	            ' |',
 	            item.initiative,
 	            ' |',
+	            item.status,
+	            ' |',
 	            _react2.default.createElement(
 	              'button',
 	              { onClick: function onClick() {
@@ -14727,7 +14786,28 @@
 	                  return _this2.props.addToOrder({ id: item.id });
 	                } },
 	              'ADD TO ORDER'
-	            )
+	            ),
+	            _react2.default.createElement('input', { placeholder: 'setName', value: item.name, onChange: function onChange(event) {
+	                return _this2.props.setName({ id: item.id, name: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { placeholder: 'setMaxHp', value: item.maxHp | 0, onChange: function onChange(event) {
+	                return _this2.props.setMaxHp({ id: item.id, maxHp: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { placeholder: 'setCurrentHp', value: item.currentHp | 0, onChange: function onChange(event) {
+	                return _this2.props.setCurrentHp({ id: item.id, currentHp: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { type: 'number', placeholder: 'applyDamage', onChange: function onChange(event) {
+	                return _this2.props.applyDamage({ id: item.id, damage: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { type: 'number', placeholder: 'applyHealing', onChange: function onChange(event) {
+	                return _this2.props.applyHealing({ id: item.id, heal: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { placeholder: 'setTempHp', value: item.tempHp | 0, onChange: function onChange(event) {
+	                return _this2.props.setTempHp({ id: item.id, tempHp: event.target.value });
+	              } }),
+	            _react2.default.createElement('input', { placeholder: 'setStatus', value: item.status, onChange: function onChange(event) {
+	                return _this2.props.setStatus({ id: item.id, status: event.target.value });
+	              } })
 	          );
 	        }),
 	        Object.keys(order).map(function (key) {
@@ -14747,7 +14827,8 @@
 	                item,
 	                _react2.default.createElement(
 	                  'button',
-	                  { onClick: function onClick() {
+	                  {
+	                    onClick: function onClick() {
 	                      return _this2.props.removeParticipantFromOrder({ id: item });
 	                    } },
 	                  'REMOVE participants from order'
@@ -14785,8 +14866,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var uuidv4 = __webpack_require__(166);
 
+	var _addBestiary = __webpack_require__(201);
+
+	var _addBestiary2 = _interopRequireDefault(_addBestiary);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var uuidv4 = __webpack_require__(166);
 	exports.default = [function addParticipant(_ref) {
 	  var state = _ref.state,
 	      props = _ref.props;
@@ -14798,7 +14885,7 @@
 	    initiative: props.initiative,
 	    hp: props.hp
 	  });
-	}];
+	}, _addBestiary2.default];
 
 /***/ }),
 /* 166 */
@@ -15044,7 +15131,7 @@
 	    _templateObject2 = _taggedTemplateLiteral(['id'], ['id']),
 	    _templateObject3 = _taggedTemplateLiteral(['initiative'], ['initiative']);
 
-	var _operators = __webpack_require__(341);
+	var _operators = __webpack_require__(175);
 
 	var _tags = __webpack_require__(125);
 
@@ -15055,192 +15142,6 @@
 
 /***/ }),
 /* 175 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [function setOrderName(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-	  var id = props.id,
-	      name = props.name;
-
-	  var order = state.get('order');
-	  order[name] = Object.assign({}, order[id]);
-	  delete order[id];
-	  state.set('order', order);
-	}];
-
-/***/ }),
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */,
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */,
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
-/* 338 */,
-/* 339 */,
-/* 340 */,
-/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15249,7 +15150,7 @@
 	  value: true
 	});
 
-	var _debounce = __webpack_require__(342);
+	var _debounce = __webpack_require__(176);
 
 	Object.defineProperty(exports, 'debounce', {
 	  enumerable: true,
@@ -15258,7 +15159,7 @@
 	  }
 	});
 
-	var _when = __webpack_require__(345);
+	var _when = __webpack_require__(179);
 
 	Object.defineProperty(exports, 'when', {
 	  enumerable: true,
@@ -15267,7 +15168,7 @@
 	  }
 	});
 
-	var _wait = __webpack_require__(346);
+	var _wait = __webpack_require__(180);
 
 	Object.defineProperty(exports, 'wait', {
 	  enumerable: true,
@@ -15276,7 +15177,7 @@
 	  }
 	});
 
-	var _equals = __webpack_require__(347);
+	var _equals = __webpack_require__(181);
 
 	Object.defineProperty(exports, 'equals', {
 	  enumerable: true,
@@ -15285,7 +15186,7 @@
 	  }
 	});
 
-	var _concat = __webpack_require__(348);
+	var _concat = __webpack_require__(182);
 
 	Object.defineProperty(exports, 'concat', {
 	  enumerable: true,
@@ -15294,7 +15195,7 @@
 	  }
 	});
 
-	var _increment = __webpack_require__(349);
+	var _increment = __webpack_require__(183);
 
 	Object.defineProperty(exports, 'increment', {
 	  enumerable: true,
@@ -15303,7 +15204,7 @@
 	  }
 	});
 
-	var _merge = __webpack_require__(350);
+	var _merge = __webpack_require__(184);
 
 	Object.defineProperty(exports, 'merge', {
 	  enumerable: true,
@@ -15312,7 +15213,7 @@
 	  }
 	});
 
-	var _pop = __webpack_require__(351);
+	var _pop = __webpack_require__(185);
 
 	Object.defineProperty(exports, 'pop', {
 	  enumerable: true,
@@ -15321,7 +15222,7 @@
 	  }
 	});
 
-	var _push = __webpack_require__(352);
+	var _push = __webpack_require__(186);
 
 	Object.defineProperty(exports, 'push', {
 	  enumerable: true,
@@ -15330,7 +15231,7 @@
 	  }
 	});
 
-	var _set = __webpack_require__(353);
+	var _set = __webpack_require__(187);
 
 	Object.defineProperty(exports, 'set', {
 	  enumerable: true,
@@ -15339,7 +15240,7 @@
 	  }
 	});
 
-	var _shift = __webpack_require__(354);
+	var _shift = __webpack_require__(188);
 
 	Object.defineProperty(exports, 'shift', {
 	  enumerable: true,
@@ -15348,7 +15249,7 @@
 	  }
 	});
 
-	var _splice = __webpack_require__(355);
+	var _splice = __webpack_require__(189);
 
 	Object.defineProperty(exports, 'splice', {
 	  enumerable: true,
@@ -15357,7 +15258,7 @@
 	  }
 	});
 
-	var _toggle = __webpack_require__(356);
+	var _toggle = __webpack_require__(190);
 
 	Object.defineProperty(exports, 'toggle', {
 	  enumerable: true,
@@ -15366,7 +15267,7 @@
 	  }
 	});
 
-	var _unset = __webpack_require__(357);
+	var _unset = __webpack_require__(191);
 
 	Object.defineProperty(exports, 'unset', {
 	  enumerable: true,
@@ -15375,7 +15276,7 @@
 	  }
 	});
 
-	var _unshift = __webpack_require__(358);
+	var _unshift = __webpack_require__(192);
 
 	Object.defineProperty(exports, 'unshift', {
 	  enumerable: true,
@@ -15388,7 +15289,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 342 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15397,7 +15298,7 @@
 	  value: true
 	});
 
-	var _factories = __webpack_require__(343);
+	var _factories = __webpack_require__(177);
 
 	Object.defineProperty(exports, 'default', {
 	  enumerable: true,
@@ -15408,7 +15309,7 @@
 	//# sourceMappingURL=debounce.js.map
 
 /***/ }),
-/* 343 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15417,7 +15318,7 @@
 	  value: true
 	});
 
-	var _debounce = __webpack_require__(344);
+	var _debounce = __webpack_require__(178);
 
 	Object.defineProperty(exports, 'debounce', {
 	  enumerable: true,
@@ -15430,7 +15331,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 344 */
+/* 178 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15481,7 +15382,7 @@
 	//# sourceMappingURL=debounce.js.map
 
 /***/ }),
-/* 345 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15534,7 +15435,7 @@
 	//# sourceMappingURL=when.js.map
 
 /***/ }),
-/* 346 */
+/* 180 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15561,7 +15462,7 @@
 	//# sourceMappingURL=wait.js.map
 
 /***/ }),
-/* 347 */
+/* 181 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15592,7 +15493,7 @@
 	//# sourceMappingURL=equals.js.map
 
 /***/ }),
-/* 348 */
+/* 182 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15617,7 +15518,7 @@
 	//# sourceMappingURL=concat.js.map
 
 /***/ }),
-/* 349 */
+/* 183 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15675,7 +15576,7 @@
 	//# sourceMappingURL=increment.js.map
 
 /***/ }),
-/* 350 */
+/* 184 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15720,7 +15621,7 @@
 	//# sourceMappingURL=merge.js.map
 
 /***/ }),
-/* 351 */
+/* 185 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15745,7 +15646,7 @@
 	//# sourceMappingURL=pop.js.map
 
 /***/ }),
-/* 352 */
+/* 186 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15770,7 +15671,7 @@
 	//# sourceMappingURL=push.js.map
 
 /***/ }),
-/* 353 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15824,7 +15725,7 @@
 	//# sourceMappingURL=set.js.map
 
 /***/ }),
-/* 354 */
+/* 188 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15849,7 +15750,7 @@
 	//# sourceMappingURL=shift.js.map
 
 /***/ }),
-/* 355 */
+/* 189 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15888,7 +15789,7 @@
 	//# sourceMappingURL=splice.js.map
 
 /***/ }),
-/* 356 */
+/* 190 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15915,7 +15816,7 @@
 	//# sourceMappingURL=toggle.js.map
 
 /***/ }),
-/* 357 */
+/* 191 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15940,7 +15841,7 @@
 	//# sourceMappingURL=unset.js.map
 
 /***/ }),
-/* 358 */
+/* 192 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -15963,6 +15864,211 @@
 	  return unshift;
 	};
 	//# sourceMappingURL=unshift.js.map
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function setOrderName(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+	  var id = props.id,
+	      name = props.name;
+
+	  var order = state.get('order');
+	  order[name] = Object.assign({}, order[id]);
+	  delete order[id];
+	  state.set('order', order);
+	}];
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function setName(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  participants[foundIndex].name = props.name;
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function setMaxHp(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  participants[foundIndex].maxHp = parseInt(props.maxHp);
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function setCurrentHp(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  participants[foundIndex].currentHp = parseInt(props.currentHp);
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function applyDamage(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  state.increment('participants.' + foundIndex + '.currentHp', -Math.abs(parseInt(props.damage)));
+	}];
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function applyHealing(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  state.increment('participants.' + foundIndex + '.currentHp', +parseInt(props.heal));
+	}];
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function setTempHp(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  participants[foundIndex].tempHp = props.tempHp;
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function setStatus(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var id = props.id;
+	  var participants = state.get('participants');
+	  var foundIndex = participants.findIndex(function (participant) {
+	    return participant.id === id;
+	  });
+	  participants[foundIndex].status = props.status;
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var uuidv4 = __webpack_require__(166);
+
+	exports.default = [function addBestiary(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var bestiary = state.get('bestiary');
+	  bestiary[props.dndBeyondId] = props.statBlockData;
+	  state.set('bestiary', bestiary);
+	}];
 
 /***/ })
 /******/ ]);

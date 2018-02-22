@@ -73,6 +73,32 @@ const addParticipant = function () {
         dndBeyondId: getMonsterNameFromURL(),
         hp: parseInt(document.querySelector('.mon-stat-block__attribute-data-value').textContent.trim()),
         initiative: 0,
+        statBlockData: document.querySelector('.mon-stat-block').outerHTML,
+
+}
+    },
+    function (response) {
+      console.log(response, '=-=-=-=', chrome.runtime.id)
+    })
+}
+
+const addStatBlockData = function () {
+  console.log('sending', {
+    // name: document.querySelector('.mon-stat-block__name-link').text,
+    dndBeyondId: getMonsterNameFromURL(),
+    // hp: parseInt(document.querySelector('.mon-stat-block__attribute-data-value').textContent.trim()),
+    // initiative: 0,
+    statBlockData: document.querySelector('.mon-stat-block').outerHTML,
+  })
+
+
+  chrome.runtime.sendMessage(chrome.runtime.id, {
+      msg: {
+        // name: document.querySelector('.mon-stat-block__name-link').text,
+        dndBeyondId: getMonsterNameFromURL(),
+        // hp: parseInt(document.querySelector('.mon-stat-block__attribute-data-value').textContent.trim()),
+        // initiative: 0,
+        statBlockData: document.querySelector('.mon-stat-block').outerHTML,
       }
     },
     function (response) {
@@ -118,6 +144,9 @@ const Card = ({
 
                 <Button onClick={addParticipant}>
                     Add participant
+                </Button>
+                <Button onClick={addStatBlockData}>
+                  Add Stat BlockData
                 </Button>
             </Header>
 

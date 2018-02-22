@@ -13,6 +13,14 @@ import removeOrderGroup from './signals/removeOrderGroup'
 import removeParticipantFromOrder from './signals/removeParticipantFromOrder'
 import setInitiative from './signals/setInitiative'
 import setOrderName from './signals/setOrderName'
+import setName from './signals/setName'
+import setMaxHp from './signals/setMaxHp'
+import setCurrentHp from './signals/setCurrentHp'
+import applyDamage from './signals/applyDamage'
+import applyHealing from './signals/applyHealing'
+import setTempHp from './signals/setTempHp'
+import setStatus from './signals/setStatus'
+import addBestiary from './signals/addBestiary'
 
 const storage = StorageModule({
   target: localStorage,
@@ -39,7 +47,15 @@ const app = Module({
     setOrderName,
     addParticipant,
     removeParticipant,
-    editInitiative
+    editInitiative,
+    setName,
+    setMaxHp,
+    setCurrentHp,
+    applyDamage,
+    applyHealing,
+    setTempHp,
+    setStatus,
+    addBestiary,
   }
 })
 
@@ -70,7 +86,9 @@ window.Menu = App
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     console.log('inside event listner', request, sender, sendResponse)
-    const {initiative, dndBeyondId, name, hp} = request.msg
-    window.CEREBRAL.getSignal('addParticipant')({initiative, dndBeyondId, name, hp})
+    const {initiative, dndBeyondId, name, hp, statBlockData} = request.msg
+
+    hp ? window.CEREBRAL.getSignal('addParticipant')({initiative, dndBeyondId, name, hp, statBlockData})
+      : window.CEREBRAL.getSignal('addBestiary')({dndBeyondId, statBlockData})
   }
 )
