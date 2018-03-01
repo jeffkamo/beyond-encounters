@@ -61,14 +61,14 @@ const app = Module({
 
 
 const controller = Controller(app, {
-  devtools: Devtools({
-    host: 'localhost:8585',
-    https: false,
-    reconnect: true,
-    storeMutations: true,
-    bigComponentsWarning: 5,
-    warnStateProps: true,
-  })
+  // devtools: Devtools({
+  //   host: 'localhost:8585',
+  //   https: false,
+  //   reconnect: true,
+  //   storeMutations: true,
+  //   bigComponentsWarning: 5,
+  //   warnStateProps: true,
+  // })
 })
 
 window.CEREBRAL = controller
@@ -82,6 +82,13 @@ const App = () => {
 }
 
 window.Menu = App
+// window.getStyles = () => {
+//   // console.log('TESTING inside get Styles')
+//   // let el = document.createElement('div')
+//   // el.appendChild(document.querySelector('style[data-styled-components]'))
+//   // console.log('styles', el.innerHTML)
+//   // return el.innerHTML
+// }
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {

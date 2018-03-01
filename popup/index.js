@@ -30,5 +30,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// TESTING
+const styles = chrome.extension.getBackgroundPage().document.getElementsByTagName('head')[0]
+document.getElementsByTagName('head')[0].appendChild(styles)
+
+// const styles = chrome.extension.getBackgroundPage().getStyles()
+// console.log('TESTING styles', styles)
+// ReactDOM.render(
+//   <div dangerouslySetInnerHTML={{__html: styles}} />,
+//   document.getElementById('be-styles')
+// )
+
 const Menu = chrome.extension.getBackgroundPage().Menu()
-ReactDOM.render(Menu, document.getElementById('container'))
+ReactDOM.render(
+  Menu,
+  document.getElementById('be-container')
+)
