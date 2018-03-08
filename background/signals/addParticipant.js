@@ -3,13 +3,16 @@ import addBestiary from './addBestiary'
 
 export default [
   function addParticipant({state, props}) {
-    state.push('participants', {
-      id: uuidv4(),
+    const uuid = uuidv4()
+    let participants = state.get('participants')
+    participants[uuid] = {
+      id: uuid,
       dndBeyondId: props.dndBeyondId,
       name: props.dndBeyondId,
       initiative: props.initiative,
       hp: props.hp
-    })
+    }
+    state.set('participants', participants)
   },
   addBestiary
 ]

@@ -36,7 +36,7 @@ const app = Module({
   modules: {storage},
   state: {
     order: {},
-    participants: [],
+    participants: {},
     bestiary: {'giant-poisonous-snake': {url: 'http://google.com/#'}}
   },
   signals: {
@@ -61,14 +61,14 @@ const app = Module({
 
 
 const controller = Controller(app, {
-  // devtools: Devtools({
-  //   host: 'localhost:8585',
-  //   https: false,
-  //   reconnect: true,
-  //   storeMutations: true,
-  //   bigComponentsWarning: 5,
-  //   warnStateProps: true,
-  // })
+  devtools: Devtools({
+    host: 'localhost:8585',
+    https: false,
+    reconnect: true,
+    storeMutations: true,
+    bigComponentsWarning: 5,
+    warnStateProps: true,
+  })
 })
 
 window.CEREBRAL = controller

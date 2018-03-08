@@ -4,11 +4,12 @@ export default [
     const {id} = props
     let order = state.get('order')
     let participants = state.get('participants')
-    const foundIndex = participants.findIndex(participant => participant.id === id)
-    const selectedParticipant = participants[foundIndex]
+    const selectedParticipant = participants[id]
 
-    order[selectedParticipant.dndBeyondId] ?  order[selectedParticipant.dndBeyondId].ids.push(id)
+    order[selectedParticipant.dndBeyondId]
+      ? order[selectedParticipant.dndBeyondId].ids.push(id)
       : order[selectedParticipant.dndBeyondId] = {
+        id: selectedParticipant.dndBeyondId,
         ids: [id],
         name: selectedParticipant.name,
         initiative: 0
