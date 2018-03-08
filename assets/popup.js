@@ -56,7 +56,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// TESTING
+	// Use a mutation observer to catch changes to the Background's style tag.
+	// If it updates, then update the Popup's style tag
 	// import React from 'react';
 	// import ReactDOM from 'react-dom';
 	// import App from './components/App.js';
@@ -86,15 +87,13 @@
 	// );
 
 
-	var styles = chrome.extension.getBackgroundPage().document.getElementsByTagName('head')[0];
-	document.getElementsByTagName('head')[0].appendChild(styles);
-
-	// const styles = chrome.extension.getBackgroundPage().getStyles()
-	// console.log('TESTING styles', styles)
-	// ReactDOM.render(
-	//   <div dangerouslySetInnerHTML={{__html: styles}} />,
-	//   document.getElementById('be-styles')
-	// )
+	var style = chrome.extension.getBackgroundPage().document.getElementsByTagName('style')[0];
+	var callback = function callback() {
+	  return document.getElementsByTagName('head')[0].appendChild(style.cloneNode(true));
+	};
+	var observer = new MutationObserver(callback);
+	observer.observe(style, { attributes: true, childList: true });
+	callback();
 
 	var Menu = chrome.extension.getBackgroundPage().Menu();
 	_reactDom2.default.render(Menu, document.getElementById('be-container'));

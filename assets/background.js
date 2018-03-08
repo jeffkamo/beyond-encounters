@@ -4251,13 +4251,6 @@
 	};
 
 	window.Menu = App;
-	// window.getStyles = () => {
-	//   // console.log('TESTING inside get Styles')
-	//   // let el = document.createElement('div')
-	//   // el.appendChild(document.querySelector('style[data-styled-components]'))
-	//   // console.log('styles', el.innerHTML)
-	//   // return el.innerHTML
-	// }
 
 	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	  console.log('inside event listner', request, sender, sendResponse);
