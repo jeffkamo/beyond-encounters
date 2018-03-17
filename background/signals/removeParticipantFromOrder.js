@@ -1,4 +1,5 @@
 const uuidv4 = require('uuid/v4')
+import removeParticipant from './removeParticipant'
 
 export default [
   function removeParticipantFromOrder({state, props}) {
@@ -11,5 +12,6 @@ export default [
     })
 
     state.set('order', order)
-  }
+  },
+  removeParticipant
 ]

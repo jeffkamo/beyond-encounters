@@ -1,10 +1,11 @@
 const uuidv4 = require('uuid/v4')
 import addBestiary from './addBestiary'
+import addToOrder from './addToOrder'
 
 export default [
   function addParticipant({state, props}) {
     const uuid = uuidv4()
-    let participants = state.get('participants')
+    const participants = state.get('participants')
     participants[uuid] = {
       id: uuid,
       dndBeyondId: props.dndBeyondId,
@@ -12,7 +13,13 @@ export default [
       initiative: props.initiative,
       hp: props.hp
     }
+
+    // Add participant!
     state.set('participants', participants)
+
+    // This is needed in order to add paricipant to the Order group
+    return participants[uuid]
   },
-  addBestiary
+  addBestiary,
+  addToOrder
 ]
