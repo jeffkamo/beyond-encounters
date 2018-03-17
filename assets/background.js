@@ -14757,21 +14757,7 @@
 	          { onClick: function onClick() {
 	              return _this2.props.removeParticipantFromOrder({ uuid: participant.id });
 	            } },
-	          'Delete (from order)'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: function onClick() {
-	              return _this2.props.removeParticipant({ id: participant.id });
-	            } },
-	          'REMOVE'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: function onClick() {
-	              return _this2.props.addToOrder({ id: participant.id });
-	            } },
-	          'ADD TO ORDER'
+	          'Delete'
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -14871,10 +14857,14 @@
 	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
 	      var participants = this.props.participants;
-	      participants = Object.keys(participants).map(function (id) {
+
+	      participants = Object.keys(participants).filter(function (id) {
+	        return ids.indexOf(id) >= 0;
+	      }).map(function (id) {
 	        return participants[id];
 	      });
-	      return participants.map(this.renderParticipant.bind(this));
+
+	      return participants.length > 0 ? participants.map(this.renderParticipant.bind(this)) : [];
 	    }
 	  }, {
 	    key: 'renderOrderGroupParticipants',
@@ -14963,7 +14953,7 @@
 	              }
 	            })
 	          ),
-	          _this4.renderOrderGroupParticipants(group.ids)
+	          _this4.renderParticipants(group.ids)
 	        );
 	      });
 	    }
@@ -18852,6 +18842,10 @@
 
 	var _addBestiary2 = _interopRequireDefault(_addBestiary);
 
+	var _addToOrder = __webpack_require__(178);
+
+	var _addToOrder2 = _interopRequireDefault(_addToOrder);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var uuidv4 = __webpack_require__(173);
@@ -18867,9 +18861,13 @@
 	    name: props.dndBeyondId,
 	    initiative: props.initiative,
 	    hp: props.hp
-	  };
-	  state.set('participants', participants);
-	}, _addBestiary2.default];
+
+	    // Add participant!
+	  };state.set('participants', participants);
+
+	  // This is needed in order to add paricipant to the Order group
+	  return participants[uuid];
+	}, _addBestiary2.default, _addToOrder2.default];
 
 /***/ }),
 /* 172 */
@@ -19009,7 +19007,7 @@
 	  var participants = state.get('participants');
 
 	  Object.keys(participants).forEach(function (id) {
-	    if (id === props.id) {
+	    if (id === (props.id || props.uuid)) {
 	      delete participants[id];
 	    }
 	  });
@@ -19089,8 +19087,25 @@
 	      props = _ref.props;
 
 	  var order = state.get('order');
+	  var ids = order[props.id].ids;
+
 	  delete order[props.id];
+
 	  state.set('order', order);
+
+	  // This is needed, so we can delete the order group's participants
+	  return { ids: ids };
+	}, function removeParticipants(_ref2) {
+	  var state = _ref2.state,
+	      props = _ref2.props;
+
+	  var participants = state.get('participants');
+
+	  props.ids.forEach(function (id) {
+	    delete participants[id];
+	  });
+
+	  state.set('participants', participants);
 	}];
 
 /***/ }),
@@ -19102,8 +19117,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var uuidv4 = __webpack_require__(173);
 
+	var _removeParticipant = __webpack_require__(176);
+
+	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var uuidv4 = __webpack_require__(173);
 	exports.default = [function removeParticipantFromOrder(_ref) {
 	  var state = _ref.state,
 	      props = _ref.props;
@@ -19117,7 +19138,7 @@
 	  });
 
 	  state.set('order', order);
-	}];
+	}, _removeParticipant2.default];
 
 /***/ }),
 /* 181 */

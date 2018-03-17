@@ -16,15 +16,7 @@ class PopupMenu extends React.Component {
         <code>{participant.dndBeyondId}</code>
 
         <button onClick={() => this.props.removeParticipantFromOrder({uuid: participant.id})}>
-          Delete (from order)
-        </button>
-
-        <button onClick={() => this.props.removeParticipant({id: participant.id})}>
-          REMOVE
-        </button>
-
-        <button onClick={() => this.props.addToOrder({id: participant.id})}>
-          ADD TO ORDER
+          Delete
         </button>
 
         <div>
@@ -74,8 +66,14 @@ class PopupMenu extends React.Component {
 
   renderParticipants(ids = []) {
     let participants = this.props.participants
-    participants = Object.keys(participants).map((id) => participants[id])
-    return participants.map(this.renderParticipant.bind(this))
+
+    participants = Object.keys(participants)
+      .filter((id) => ids.indexOf(id) >= 0)
+      .map((id) => participants[id])
+
+    return (participants.length > 0)
+      ? participants.map(this.renderParticipant.bind(this))
+      : []
   }
 
   renderOrderGroupParticipants(ids = []) {
@@ -121,7 +119,7 @@ class PopupMenu extends React.Component {
           />
         </div>
 
-        {this.renderOrderGroupParticipants(group.ids)}
+        {this.renderParticipants(group.ids)}
       </Group>
     ))
   }
