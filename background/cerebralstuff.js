@@ -36,7 +36,7 @@ const app = Module({
   modules: {storage},
   state: {
     order: {},
-    participants: [],
+    participants: {},
     bestiary: {'giant-poisonous-snake': {url: 'http://google.com/#'}}
   },
   signals: {
