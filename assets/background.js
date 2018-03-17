@@ -4130,15 +4130,15 @@
 
 	var _addParticipant2 = _interopRequireDefault(_addParticipant);
 
-	var _removeParticipant = __webpack_require__(176);
+	var _removeParticipant = __webpack_require__(177);
 
 	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
 
-	var _editInitiative = __webpack_require__(177);
+	var _editInitiative = __webpack_require__(178);
 
 	var _editInitiative2 = _interopRequireDefault(_editInitiative);
 
-	var _addToOrder = __webpack_require__(178);
+	var _addToOrder = __webpack_require__(176);
 
 	var _addToOrder2 = _interopRequireDefault(_addToOrder);
 
@@ -14688,23 +14688,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _templateObject = _taggedTemplateLiteral(['\n  border: 1px solid #e1e1e1;\n  background: #f1f1f1;\n  padding: 0.5em;\n'], ['\n  border: 1px solid #e1e1e1;\n  background: #f1f1f1;\n  padding: 0.5em;\n']),
-	    _templateObject2 = _taggedTemplateLiteral(['participants'], ['participants']),
-	    _templateObject3 = _taggedTemplateLiteral(['order'], ['order']),
-	    _templateObject4 = _taggedTemplateLiteral(['removeParticipant'], ['removeParticipant']),
-	    _templateObject5 = _taggedTemplateLiteral(['addToOrder'], ['addToOrder']),
-	    _templateObject6 = _taggedTemplateLiteral(['removeOrderGroup'], ['removeOrderGroup']),
-	    _templateObject7 = _taggedTemplateLiteral(['removeParticipantFromOrder'], ['removeParticipantFromOrder']),
-	    _templateObject8 = _taggedTemplateLiteral(['setInitiative'], ['setInitiative']),
-	    _templateObject9 = _taggedTemplateLiteral(['setOrderName'], ['setOrderName']),
-	    _templateObject10 = _taggedTemplateLiteral(['setName'], ['setName']),
-	    _templateObject11 = _taggedTemplateLiteral(['setMaxHp'], ['setMaxHp']),
-	    _templateObject12 = _taggedTemplateLiteral(['setCurrentHp'], ['setCurrentHp']),
-	    _templateObject13 = _taggedTemplateLiteral(['applyDamage'], ['applyDamage']),
-	    _templateObject14 = _taggedTemplateLiteral(['applyHealing'], ['applyHealing']),
-	    _templateObject15 = _taggedTemplateLiteral(['setTempHp'], ['setTempHp']),
-	    _templateObject16 = _taggedTemplateLiteral(['setStatus'], ['setStatus']),
-	    _templateObject17 = _taggedTemplateLiteral(['addBestiary'], ['addBestiary']);
+	var _templateObject = _taggedTemplateLiteral(['order'], ['order']);
 
 	var _react = __webpack_require__(81);
 
@@ -14718,17 +14702,19 @@
 
 	var _styledComponents2 = _interopRequireDefault(_styledComponents);
 
+	var _OrderGroup = __webpack_require__(368);
+
+	var _OrderGroup2 = _interopRequireDefault(_OrderGroup);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-	var Group = _styledComponents2.default.div(_templateObject);
 
 	var PopupMenu = function (_React$Component) {
 	  _inherits(PopupMenu, _React$Component);
@@ -14740,233 +14726,19 @@
 	  }
 
 	  _createClass(PopupMenu, [{
-	    key: 'renderParticipant',
-	    value: function renderParticipant(participant) {
-	      var _this2 = this;
-
-	      return _react2.default.createElement(
-	        'div',
-	        { key: participant.id, style: { marginBottom: '1em' } },
-	        _react2.default.createElement(
-	          'code',
-	          null,
-	          participant.dndBeyondId
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: function onClick() {
-	              return _this2.props.removeParticipantFromOrder({ uuid: participant.id });
-	            } },
-	          'Delete'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'setName' },
-	            'Name:'
-	          ),
-	          ' ',
-	          participant.name,
-	          _react2.default.createElement('input', { id: 'setName', placeholder: 'setName', value: participant.name, onChange: function onChange(event) {
-	              return _this2.props.setName({ id: participant.id, name: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'setCurrentHp' },
-	            'Current HP:'
-	          ),
-	          ' ',
-	          participant.hp,
-	          _react2.default.createElement('input', { id: 'setCurrentHp', placeholder: 'setCurrentHp', value: participant.currentHp | 0, onChange: function onChange(event) {
-	              return _this2.props.setCurrentHp({ id: participant.id, currentHp: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'setMaxHp' },
-	            'Max HP:'
-	          ),
-	          _react2.default.createElement('input', { id: 'setMaxHp', placeholder: 'setMaxHp', value: participant.maxHp | 0, onChange: function onChange(event) {
-	              return _this2.props.setMaxHp({ id: participant.id, maxHp: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'setTempHp' },
-	            'Temp HP:'
-	          ),
-	          _react2.default.createElement('input', { id: 'setTempHp', placeholder: 'setTempHp', value: participant.tempHp | 0, onChange: function onChange(event) {
-	              return _this2.props.setTempHp({ id: participant.id, tempHp: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'applyDamage' },
-	            'Dmg:'
-	          ),
-	          _react2.default.createElement('input', { id: 'applyDamage', type: 'number', placeholder: 'applyDamage', onChange: function onChange(event) {
-	              return _this2.props.applyDamage({ id: participant.id, damage: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'applyHealing' },
-	            'Heals:'
-	          ),
-	          _react2.default.createElement('input', { id: 'applyHealing', type: 'number', placeholder: 'applyHealing', onChange: function onChange(event) {
-	              return _this2.props.applyHealing({ id: participant.id, heal: event.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'setStatus' },
-	            'Status:'
-	          ),
-	          ' ',
-	          participant.status,
-	          _react2.default.createElement('input', { id: 'setStatus', placeholder: 'setStatus', value: participant.status, onChange: function onChange(event) {
-	              return _this2.props.setStatus({ id: participant.id, status: event.target.value });
-	            } })
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'renderParticipants',
-	    value: function renderParticipants() {
-	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-	      var participants = this.props.participants;
-
-	      participants = Object.keys(participants).filter(function (id) {
-	        return ids.indexOf(id) >= 0;
-	      }).map(function (id) {
-	        return participants[id];
-	      });
-
-	      return participants.length > 0 ? participants.map(this.renderParticipant.bind(this)) : [];
-	    }
-	  }, {
-	    key: 'renderOrderGroupParticipants',
-	    value: function renderOrderGroupParticipants() {
-	      var _this3 = this;
-
-	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-	      return ids.map(function (uuid, index) {
-	        return _react2.default.createElement(
-	          'div',
-	          { key: uuid + '-' + index },
-	          _react2.default.createElement(
-	            'code',
-	            null,
-	            uuid
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: function onClick() {
-	                return _this3.props.removeParticipantFromOrder({ uuid: uuid });
-	              } },
-	            'Delete Participant'
-	          )
-	        );
-	      });
-	    }
-	  }, {
-	    key: 'renderOrderGroups',
-	    value: function renderOrderGroups() {
-	      var _this4 = this;
-
+	    key: 'render',
+	    value: function render() {
 	      var order = this.props.order;
 	      order = Object.keys(order).map(function (id) {
 	        return order[id];
 	      });
 
-	      return order.map(function (group) {
-	        return _react2.default.createElement(
-	          Group,
-	          { key: group.id },
-	          _react2.default.createElement(
-	            'code',
-	            null,
-	            group.id
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: function onClick() {
-	                return _this4.props.removeOrderGroup({ id: group.id });
-	              } },
-	            'Delete Group'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	              'strong',
-	              null,
-	              'Group Name:'
-	            ),
-	            ' ',
-	            group.name,
-	            _react2.default.createElement('input', {
-	              id: 'orderName',
-	              value: group.name,
-	              onChange: function onChange(event) {
-	                return _this4.props.setOrderName({ id: group.id, name: event.target.value });
-	              }
-	            })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            null,
-	            _react2.default.createElement(
-	              'strong',
-	              null,
-	              'Initiative:'
-	            ),
-	            ' ',
-	            group.initiative,
-	            _react2.default.createElement('input', {
-	              value: order.initiative,
-	              onChange: function onChange(event) {
-	                return _this4.props.setInitiative({ id: group.id, initiative: event.target.value });
-	              }
-	            })
-	          ),
-	          _this4.renderParticipants(group.ids)
-	        );
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var divStyle = { width: '500px' };
-
 	      return _react2.default.createElement(
 	        'div',
-	        { style: divStyle },
-	        this.renderParticipants(),
-	        this.renderOrderGroups()
+	        { style: { width: '500px' } },
+	        order.map(function (group, idx) {
+	          return _react2.default.createElement(_OrderGroup2.default, { id: group.id, key: idx });
+	        })
 	      );
 	    }
 	  }]);
@@ -14974,24 +14746,7 @@
 	  return PopupMenu;
 	}(_react2.default.Component);
 
-	exports.default = (0, _react3.connect)({
-	  participants: (0, _tags.state)(_templateObject2),
-	  order: (0, _tags.state)(_templateObject3),
-	  removeParticipant: (0, _tags.signal)(_templateObject4),
-	  addToOrder: (0, _tags.signal)(_templateObject5),
-	  removeOrderGroup: (0, _tags.signal)(_templateObject6),
-	  removeParticipantFromOrder: (0, _tags.signal)(_templateObject7),
-	  setInitiative: (0, _tags.signal)(_templateObject8),
-	  setOrderName: (0, _tags.signal)(_templateObject9),
-	  setName: (0, _tags.signal)(_templateObject10),
-	  setMaxHp: (0, _tags.signal)(_templateObject11),
-	  setCurrentHp: (0, _tags.signal)(_templateObject12),
-	  applyDamage: (0, _tags.signal)(_templateObject13),
-	  applyHealing: (0, _tags.signal)(_templateObject14),
-	  setTempHp: (0, _tags.signal)(_templateObject15),
-	  setStatus: (0, _tags.signal)(_templateObject16),
-	  addBestiary: (0, _tags.signal)(_templateObject17)
-	}, PopupMenu);
+	exports.default = (0, _react3.connect)({ order: (0, _tags.state)(_templateObject) }, PopupMenu);
 
 /***/ }),
 /* 165 */
@@ -18842,7 +18597,7 @@
 
 	var _addBestiary2 = _interopRequireDefault(_addBestiary);
 
-	var _addToOrder = __webpack_require__(178);
+	var _addToOrder = __webpack_require__(176);
 
 	var _addToOrder2 = _interopRequireDefault(_addToOrder);
 
@@ -19000,50 +18755,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = [function removeParticipant(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-
-	  var participants = state.get('participants');
-
-	  Object.keys(participants).forEach(function (id) {
-	    if (id === (props.id || props.uuid)) {
-	      delete participants[id];
-	    }
-	  });
-
-	  state.set('participants', participants);
-	}];
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [function addInitiative(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-	  var initiative = props.initiative,
-	      id = props.id;
-
-	  var participants = state.get('participants');
-	  participants[id].initiative = initiative;
-	  state.set('participants', participants);
-	}];
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -19072,6 +18783,50 @@
 	function removeDuplicateIds(ids) {
 	  return [].concat(_toConsumableArray(new Set(ids)));
 	}
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function removeParticipant(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var participants = state.get('participants');
+
+	  Object.keys(participants).forEach(function (id) {
+	    if (id === (props.id || props.uuid)) {
+	      delete participants[id];
+	    }
+	  });
+
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function addInitiative(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+	  var initiative = props.initiative,
+	      id = props.id;
+
+	  var participants = state.get('participants');
+	  participants[id].initiative = initiative;
+	  state.set('participants', participants);
+	}];
 
 /***/ }),
 /* 179 */
@@ -19118,7 +18873,7 @@
 	  value: true
 	});
 
-	var _removeParticipant = __webpack_require__(176);
+	var _removeParticipant = __webpack_require__(177);
 
 	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
 
@@ -20052,6 +19807,612 @@
 	  participants[id].status = props.status;
 	  state.set('participants', participants);
 	}];
+
+/***/ }),
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _templateObject = _taggedTemplateLiteral(['\n  position: relative;\n  z-index: 1;\n  display: flex;\n  margin-bottom: 1rem;\n  align-items: center;\n  line-height: 1rem;\n'], ['\n  position: relative;\n  z-index: 1;\n  display: flex;\n  margin-bottom: 1rem;\n  align-items: center;\n  line-height: 1rem;\n']),
+	    _templateObject2 = _taggedTemplateLiteral(['\n'], ['\n']),
+	    _templateObject3 = _taggedTemplateLiteral(['\n  opacity: 0;\n  transition: opacity ease-in-out 0.2s;\n\n  &:focus,\n  ', ':hover & {\n    opacity: 1;\n  }\n'], ['\n  opacity: 0;\n  transition: opacity ease-in-out 0.2s;\n\n  &:focus,\n  ', ':hover & {\n    opacity: 1;\n  }\n']),
+	    _templateObject4 = _taggedTemplateLiteral(['\n  align-items: center;\n'], ['\n  align-items: center;\n']),
+	    _templateObject5 = _taggedTemplateLiteral(['\n  flex: 1 1 auto;\n  max-width: 30%;\n  overflow: hidden;\n\n  text-align: center;\n\n  ', ' {\n    width: 100%;\n  }\n'], ['\n  flex: 1 1 auto;\n  max-width: 30%;\n  overflow: hidden;\n\n  text-align: center;\n\n  ', ' {\n    width: 100%;\n  }\n']),
+	    _templateObject6 = _taggedTemplateLiteral(['\n  text-align: center;\n  line-height: 27px; // matches height of the inputs\n'], ['\n  text-align: center;\n  line-height: 27px; // matches height of the inputs\n']),
+	    _templateObject7 = _taggedTemplateLiteral(['\n  padding: 0.5rem 2rem;\n  background: tomato;\n\n  font-size: 16px;\n  color: white;\n\n  ', ' {\n    display: none;\n  }\n\n  &:hover ', ' {\n    display: flex;\n  }\n\n  &:hover ', ' {\n    display: none;\n  }\n\n  ', ' {\n    border-bottom-color: #fff;\n    color: #fff;\n    text-align: center;\n    font-size: 15px;\n  }\n'], ['\n  padding: 0.5rem 2rem;\n  background: tomato;\n\n  font-size: 16px;\n  color: white;\n\n  ', ' {\n    display: none;\n  }\n\n  &:hover ', ' {\n    display: flex;\n  }\n\n  &:hover ', ' {\n    display: none;\n  }\n\n  ', ' {\n    border-bottom-color: #fff;\n    color: #fff;\n    text-align: center;\n    font-size: 15px;\n  }\n']),
+	    _templateObject8 = _taggedTemplateLiteral(['participants'], ['participants']),
+	    _templateObject9 = _taggedTemplateLiteral(['removeParticipantFromOrder'], ['removeParticipantFromOrder']),
+	    _templateObject10 = _taggedTemplateLiteral(['setName'], ['setName']),
+	    _templateObject11 = _taggedTemplateLiteral(['setMaxHp'], ['setMaxHp']),
+	    _templateObject12 = _taggedTemplateLiteral(['setCurrentHp'], ['setCurrentHp']),
+	    _templateObject13 = _taggedTemplateLiteral(['applyDamage'], ['applyDamage']),
+	    _templateObject14 = _taggedTemplateLiteral(['applyHealing'], ['applyHealing']),
+	    _templateObject15 = _taggedTemplateLiteral(['setTempHp'], ['setTempHp']),
+	    _templateObject16 = _taggedTemplateLiteral(['setStatus'], ['setStatus']);
+
+	var _react = __webpack_require__(81);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _react3 = __webpack_require__(116);
+
+	var _tags = __webpack_require__(125);
+
+	var _styledComponents = __webpack_require__(165);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+	var _InlineEdit = __webpack_require__(369);
+
+	var _InlineEdit2 = _interopRequireDefault(_InlineEdit);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var Header = _styledComponents2.default.div(_templateObject);
+
+	var Wrap = _styledComponents2.default.div(_templateObject2);
+
+	var HiddenButton = _styledComponents2.default.button(_templateObject3, Header);
+
+	var HealthInputs = _styledComponents2.default.div(_templateObject4);
+
+	var HealthInput = _styledComponents2.default.div(_templateObject5, _InlineEdit2.default);
+
+	var HealthText = _styledComponents2.default.div(_templateObject6);
+
+	var Health = _styledComponents2.default.div(_templateObject7, HealthInputs, HealthInputs, HealthText, _InlineEdit2.default);
+
+	var Participant = function (_React$Component) {
+	  _inherits(Participant, _React$Component);
+
+	  function Participant() {
+	    _classCallCheck(this, Participant);
+
+	    return _possibleConstructorReturn(this, (Participant.__proto__ || Object.getPrototypeOf(Participant)).apply(this, arguments));
+	  }
+
+	  _createClass(Participant, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var uuid = this.props.uuid;
+	      var participant = this.props.participants[uuid];
+
+	      return _react2.default.createElement(
+	        Wrap,
+	        { key: participant.id, style: { marginBottom: '1em' } },
+	        _react2.default.createElement(
+	          Header,
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { style: { 'flex': '1 1 auto' } },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'setName' },
+	              'Name:'
+	            ),
+	            _react2.default.createElement(_InlineEdit2.default, {
+	              id: 'setName',
+	              placeholder: 'setName',
+	              value: participant.name,
+	              onChange: function onChange(event) {
+	                return _this2.props.setName({ id: participant.id, name: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { style: { 'flex': '1 1 auto' } },
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'setStatus' },
+	              'Status:'
+	            ),
+	            _react2.default.createElement(_InlineEdit2.default, {
+	              id: 'setStatus',
+	              placeholder: 'none',
+	              value: participant.status || '',
+	              onChange: function onChange(event) {
+	                return _this2.props.setStatus({ id: participant.id, status: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              HiddenButton,
+	              { onClick: function onClick() {
+	                  return _this2.props.removeParticipantFromOrder({ uuid: participant.id });
+	                } },
+	              'Delete'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          Health,
+	          null,
+	          _react2.default.createElement(
+	            HealthText,
+	            null,
+	            participant.hp,
+	            ' ',
+	            participant.tempHp && '(' + participant.tempHp + ')',
+	            ' / ',
+	            participant.maxHp
+	          ),
+	          _react2.default.createElement(
+	            HealthInputs,
+	            null,
+	            _react2.default.createElement(
+	              HealthInput,
+	              null,
+	              _react2.default.createElement(_InlineEdit2.default, {
+	                id: 'setCurrentHp',
+	                placeholder: 'Current HP',
+	                value: participant.currentHp || 0,
+	                onChange: function onChange(event) {
+	                  return _this2.props.setCurrentHp({ id: participant.id, currentHp: event.target.value });
+	                }
+	              })
+	            ),
+	            _react2.default.createElement(
+	              HealthInput,
+	              null,
+	              '('
+	            ),
+	            _react2.default.createElement(
+	              HealthInput,
+	              null,
+	              _react2.default.createElement(_InlineEdit2.default, {
+	                id: 'setTempHp',
+	                placeholder: 'Temporary HP',
+	                value: participant.tempHp || 0,
+	                onChange: function onChange(event) {
+	                  return _this2.props.setTempHp({ id: participant.id, tempHp: event.target.value });
+	                }
+	              })
+	            ),
+	            _react2.default.createElement(
+	              HealthInput,
+	              null,
+	              ') /'
+	            ),
+	            _react2.default.createElement(
+	              HealthInput,
+	              null,
+	              _react2.default.createElement(_InlineEdit2.default, {
+	                id: 'setMaxHp',
+	                placeholder: 'Max HP',
+	                value: participant.maxHp || 0,
+	                onChange: function onChange(event) {
+	                  return _this2.props.setMaxHp({ id: participant.id, maxHp: event.target.value });
+	                }
+	              })
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Participant;
+	}(_react2.default.Component);
+
+	exports.default = (0, _react3.connect)({
+	  participants: (0, _tags.state)(_templateObject8),
+	  removeParticipantFromOrder: (0, _tags.signal)(_templateObject9),
+	  setName: (0, _tags.signal)(_templateObject10),
+	  setMaxHp: (0, _tags.signal)(_templateObject11),
+	  setCurrentHp: (0, _tags.signal)(_templateObject12),
+	  applyDamage: (0, _tags.signal)(_templateObject13),
+	  applyHealing: (0, _tags.signal)(_templateObject14),
+	  setTempHp: (0, _tags.signal)(_templateObject15),
+	  setStatus: (0, _tags.signal)(_templateObject16)
+	}, Participant);
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _templateObject = _taggedTemplateLiteral(['\n  border: 1px solid #e1e1e1;\n  margin-bottom: 1rem;\n  overflow: hidden;\n'], ['\n  border: 1px solid #e1e1e1;\n  margin-bottom: 1rem;\n  overflow: hidden;\n']),
+	    _templateObject2 = _taggedTemplateLiteral(['\n  position: relative;\n  z-index: 1;\n  display: flex;\n  padding: 1rem;\n  align-items: center;\n  background: #fafafa;\n  box-shadow: 0px 1px #f1f1f1;\n  line-height: 1rem;\n'], ['\n  position: relative;\n  z-index: 1;\n  display: flex;\n  padding: 1rem;\n  align-items: center;\n  background: #fafafa;\n  box-shadow: 0px 1px #f1f1f1;\n  line-height: 1rem;\n']),
+	    _templateObject3 = _taggedTemplateLiteral(['\n  opacity: 0;\n  transition: opacity ease-in-out 0.2s;\n\n  &:focus,\n  ', ':hover & {\n    opacity: 1;\n  }\n'], ['\n  opacity: 0;\n  transition: opacity ease-in-out 0.2s;\n\n  &:focus,\n  ', ':hover & {\n    opacity: 1;\n  }\n']),
+	    _templateObject4 = _taggedTemplateLiteral(['\n  padding: 1rem;\n  background: #fff;\n'], ['\n  padding: 1rem;\n  background: #fff;\n']),
+	    _templateObject5 = _taggedTemplateLiteral(['order'], ['order']),
+	    _templateObject6 = _taggedTemplateLiteral(['removeOrderGroup'], ['removeOrderGroup']),
+	    _templateObject7 = _taggedTemplateLiteral(['setInitiative'], ['setInitiative']),
+	    _templateObject8 = _taggedTemplateLiteral(['setOrderName'], ['setOrderName']);
+
+	var _react = __webpack_require__(81);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _react3 = __webpack_require__(116);
+
+	var _tags = __webpack_require__(125);
+
+	var _styledComponents = __webpack_require__(165);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+	var _Participant = __webpack_require__(367);
+
+	var _Participant2 = _interopRequireDefault(_Participant);
+
+	var _InlineEdit = __webpack_require__(369);
+
+	var _InlineEdit2 = _interopRequireDefault(_InlineEdit);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var Group = _styledComponents2.default.div(_templateObject);
+
+	var Header = _styledComponents2.default.div(_templateObject2);
+
+	var HiddenButton = _styledComponents2.default.button(_templateObject3, Header);
+
+	var Body = _styledComponents2.default.div(_templateObject4);
+
+	var OrderGroup = function (_React$Component) {
+	  _inherits(OrderGroup, _React$Component);
+
+	  function OrderGroup() {
+	    _classCallCheck(this, OrderGroup);
+
+	    return _possibleConstructorReturn(this, (OrderGroup.__proto__ || Object.getPrototypeOf(OrderGroup)).apply(this, arguments));
+	  }
+
+	  _createClass(OrderGroup, [{
+	    key: 'renderSingular',
+	    value: function renderSingular() {
+	      var _this2 = this;
+
+	      return _react2.default.createElement(
+	        Group,
+	        { key: this.group.id },
+	        _react2.default.createElement(
+	          Header,
+	          { style: { 'background': '#fff' } },
+	          _react2.default.createElement(
+	            'div',
+	            { style: { 'flex': '1 1 auto' } },
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'Initiative:'
+	            ),
+	            _react2.default.createElement(_InlineEdit2.default, {
+	              value: this.group.initiative,
+	              onChange: function onChange(event) {
+	                return _this2.props.setInitiative({ id: _this2.group.id, initiative: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              HiddenButton,
+	              { onClick: function onClick() {
+	                  return _this2.props.removeOrderGroup({ id: _this2.group.id });
+	                } },
+	              'Delete'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          Body,
+	          null,
+	          this.participants.map(function (uuid, idx) {
+	            return _react2.default.createElement(_Participant2.default, { uuid: uuid, key: idx });
+	          })
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderMultiple',
+	    value: function renderMultiple() {
+	      var _this3 = this;
+
+	      return _react2.default.createElement(
+	        Group,
+	        { key: this.group.id },
+	        _react2.default.createElement(
+	          Header,
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { style: { 'flex': '1 1 auto' } },
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'Initiative:'
+	            ),
+	            _react2.default.createElement(_InlineEdit2.default, {
+	              value: this.group.initiative,
+	              onChange: function onChange(event) {
+	                return _this3.props.setInitiative({ id: _this3.group.id, initiative: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { style: { 'flex': '1 1 auto' } },
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'Group Name:'
+	            ),
+	            _react2.default.createElement(_InlineEdit2.default, {
+	              id: 'orderName',
+	              value: this.group.name,
+	              onChange: function onChange(event) {
+	                return _this3.props.setOrderName({ id: _this3.group.id, name: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              HiddenButton,
+	              { onClick: function onClick() {
+	                  return _this3.props.removeOrderGroup({ id: _this3.group.id });
+	                } },
+	              'Delete'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          Body,
+	          null,
+	          this.participants.map(function (uuid, idx) {
+	            return _react2.default.createElement(_Participant2.default, { uuid: uuid, key: idx });
+	          })
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var id = this.props.id;
+	      this.group = this.props.order[id];
+	      this.participants = this.group.ids;
+
+	      return this.participants.length === 1 ? this.renderSingular() : this.renderMultiple();
+	    }
+	  }]);
+
+	  return OrderGroup;
+	}(_react2.default.Component);
+
+	exports.default = (0, _react3.connect)({
+	  order: (0, _tags.state)(_templateObject5),
+	  removeOrderGroup: (0, _tags.signal)(_templateObject6),
+	  setInitiative: (0, _tags.signal)(_templateObject7),
+	  setOrderName: (0, _tags.signal)(_templateObject8)
+	}, OrderGroup);
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _templateObject = _taggedTemplateLiteral(['\n  display: inline-block;\n  min-height: 1em;\n  padding: 0.5rem;\n  border: none;\n  border-bottom: 1px dashed transparent;\n\n  border-radius: 0;\n  background-color: transparent;\n  -webkit-appearance: none;\n  -webkit-tap-highlight-color: red;\n\n  &:hover {\n    border-bottom: 1px dashed #e1e1e1;\n  }\n\n  &::-moz-focus-inner {\n    padding: 0;\n    border: 0;\n  }\n'], ['\n  display: inline-block;\n  min-height: 1em;\n  padding: 0.5rem;\n  border: none;\n  border-bottom: 1px dashed transparent;\n\n  border-radius: 0;\n  background-color: transparent;\n  -webkit-appearance: none;\n  -webkit-tap-highlight-color: red;\n\n  &:hover {\n    border-bottom: 1px dashed #e1e1e1;\n  }\n\n  &::-moz-focus-inner {\n    padding: 0;\n    border: 0;\n  }\n']);
+
+	var _react = __webpack_require__(81);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _styledComponents = __webpack_require__(165);
+
+	var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	var InlineEdit = _styledComponents2.default.input(_templateObject);
+
+	exports.default = InlineEdit;
 
 /***/ })
 /******/ ]);
