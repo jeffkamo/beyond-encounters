@@ -43,4 +43,4 @@ chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
 
 
 
-require('./cerebralstuff')()
+require('./cerebralstuff')

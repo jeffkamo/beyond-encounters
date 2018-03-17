@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4')
 import addBestiary from './addBestiary'
+import addToCards from './addToCards'
 
 export default [
   function addParticipant({state, props}) {
@@ -11,5 +12,6 @@ export default [
       hp: props.hp
     })
   },
-  addBestiary
+  addBestiary,
+  addToCards
 ]

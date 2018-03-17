@@ -1,124 +1,1 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import styled from 'styled-components';
-
-import Card from './card.jsx'
-import Example from './example.jsx'
-
-const Dashboard = styled.div`
-    position: fixed;
-    top: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    height: 100vh;
-    width: 100vw;
-    max-height: 100vh;
-
-    z-index: 9999;
-
-    pointer-events: none;
-`
-
-const DragViewPort = styled.div`
-    flex: 1 1 auto;
-    width: 100%;
-    height: 100%;
-    padding: 4px;
-
-    pointer-events: none;
-`;
-
-const Dock = styled.div`
-    display: flex;
-    flex: 0 0 auto;
-    width: 100vw;
-    padding: 4px;
-
-    background-color: rgba(230, 230, 230, 0.5);
-    box-shadow: 0 0 2px rgb(150, 150, 150);
-
-    div {
-        position: relative;
-    }
-`;
-
-class App extends Component {
-  collapseCard(card) {
-    return () => {
-      this.props.dispatch({type: 'REMOVE_FROM_DRAG_PORT', card})
-      this.props.dispatch({type: 'ADD_INTO_DOCK', card})
-    }
-  }
-
-  expandCard(card) {
-    return () => {
-      this.props.dispatch({type: 'REMOVE_FROM_DOCK', card})
-      this.props.dispatch({type: 'ADD_INTO_DRAG_PORT', card})
-    }
-  }
-
-  renderDragPort() {
-    const {cards, dragPort} = this.props
-
-    return dragPort && dragPort.map((card, idx) => {
-      const collapse = this.collapseCard(card)
-
-      return (
-        <Card
-          buttonText="_"
-          card={card}
-          title={cards[card].title}
-          key={`card-${idx}`}
-          buttonHandler={collapse}
-        >
-            <Example />
-        </Card>
-      )
-    })
-  }
-
-  renderDock() {
-    const {cards, dock} = this.props
-
-    return dock && dock.map((card, idx) => {
-      const expand = this.expandCard(card)
-
-      return (
-        <Card
-          card={card}
-          disabled
-          expandable
-          key={`card-${idx}`}
-          title={cards[card].title}
-          titleHandler={expand}
-        />
-      )
-    })
-  }
-
-  render() {
-    return (
-      <Dashboard>
-          <DragViewPort className="app__drag-view-port">
-            {this.renderDragPort()}
-          </DragViewPort>
-
-          <Dock>
-            {this.renderDock()}
-          </Dock>
-      </Dashboard>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    cards: state.cards,
-    dock: state.dock,
-    dragPort: state.dragPort,
-  };
-};
-
-export default connect(mapStateToProps)(App);
+import React from 'react'import styled from 'styled-components'import Draggable from 'react-draggable'import { state, signal } from 'cerebral/tags'import { connect } from '@cerebral/react'import dockedCards from '../computes/dockedCards'import undockedCards from '../computes/undockedCards'const Dashboard = styled.div`    position: fixed;    top: 0;    display: flex;    flex-direction: column;    align-items: flex-start;    height: 100vh;    width: 100vw;    max-height: 100vh;    z-index: 9999;    pointer-events: none;`const DragViewPort = styled.div`    flex: 1 1 auto;    width: 100%;    height: 100%;    padding: 4px;    pointer-events: none;`const Dock = styled.div`    display: flex;    flex: 0 0 auto;    width: 100vw;    padding: 4px;    background-color: rgba(230, 230, 230, 0.5);    box-shadow: 0 0 2px rgb(150, 150, 150);    div {        position: relative;    }`const Backdrop = styled.div`    position: absolute;    display: flex;    flex-direction: column;    flex: 1 1 auto;    max-width: 300px;    max-height: 400px;    margin-right: 4px;    border-radius: 1px;    overflow: hidden;    background-color: #f8f3d4;    box-shadow: 0 0 4px rgb(150, 150, 150);    pointer-events: initial;`const Header = styled.div`    display: flex;    flex: 0 0 auto;    padding: 4px 8px;    font-weight: bold;`const Title = styled.button`    flex: 1 1 auto;    margin: 0;    padding: 0;    border: 0;    overflow: hidden;    text-align: left;    text-overflow: ellipsis;    white-space: nowrap;    background-color: transparent;`export default connect({    cards: state`cards`,    runSignal: signal`runSignal`,    dockedCards,    undockedCards  },  class AppComponent extends React.Component {    render() {      const { undockedCards, dockedCards, runSignal } = this.props      return (        <Dashboard>          <DragViewPort className="app__drag-view-port">            {undockedCards && undockedCards.map((card) => (              <Draggable key={card.id}                         defaultPosition={{                           x: card.x, y: card.y                         }}                         onStop={(event) => runSignal({                           name: 'saveCoords',                           props: {                             key: card.id,                             x: event.screenX,                             y: event.screenY                           }                         })}                         bounds=".app__drag-view-port">                <Backdrop>                  <div>                    <div className="handle">{card.id}                      <button                        onClick={(event) => runSignal({                          name: 'removeCard',                          props: {                            id: card.id,                          }                        })}>Remove Card                      </button>                      <button                        onClick={(event) => runSignal({                          name: 'dockCard',                          props: {                            id: card.id,                          }                        })}>Dock Card                      </button>                    </div>                    <div dangerouslySetInnerHTML={{ __html: card.html }}/>                    <div>{card.html}</div>                  </div>                </Backdrop>              </Draggable>            ))}          </DragViewPort>          <Dock>            {dockedCards && dockedCards.map((card) => (              <Backdrop key={card.id}>                <Header onClick={(event) => runSignal({ name: 'undockCard', props: { id: card.id } })}>                  <Title>                    {card.id}                  </Title>                </Header>              </Backdrop>            ))}          </Dock>        </Dashboard>      )    }  })
