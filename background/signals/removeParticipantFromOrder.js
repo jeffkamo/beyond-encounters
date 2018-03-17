@@ -5,7 +5,9 @@ export default [
     const order = state.get('order')
 
     Object.keys(order).forEach((orderKey) => {
-      order[orderKey].ids = order[orderKey].ids.filter((uuid) => uuid !== props.uuid);
+      order[orderKey].ids = order[orderKey].ids.filter((uuid) => {
+        return uuid !== props.uuid
+      });
     })
 
     state.set('order', order)

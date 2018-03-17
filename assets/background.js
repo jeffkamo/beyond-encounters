@@ -14755,6 +14755,13 @@
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: function onClick() {
+	              return _this2.props.removeParticipantFromOrder({ uuid: participant.id });
+	            } },
+	          'Delete (from order)'
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: function onClick() {
 	              return _this2.props.removeParticipant({ id: participant.id });
 	            } },
 	          'REMOVE'
@@ -14861,6 +14868,8 @@
 	  }, {
 	    key: 'renderParticipants',
 	    value: function renderParticipants() {
+	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
 	      var participants = this.props.participants;
 	      participants = Object.keys(participants).map(function (id) {
 	        return participants[id];
@@ -14878,7 +14887,11 @@
 	        return _react2.default.createElement(
 	          'div',
 	          { key: uuid + '-' + index },
-	          uuid,
+	          _react2.default.createElement(
+	            'code',
+	            null,
+	            uuid
+	          ),
 	          _react2.default.createElement(
 	            'button',
 	            { onClick: function onClick() {
@@ -18994,10 +19007,13 @@
 	      props = _ref.props;
 
 	  var participants = state.get('participants');
-	  participants = participants.filter(function (_ref2) {
-	    var id = _ref2.id;
-	    return props.id !== id;
+
+	  Object.keys(participants).forEach(function (id) {
+	    if (id === props.id) {
+	      delete participants[id];
+	    }
 	  });
+
 	  state.set('participants', participants);
 	}];
 
