@@ -4,7 +4,7 @@ import {state, signal} from 'cerebral/tags'
 import styled from 'styled-components'
 import InlineEdit from './InlineEdit'
 
-const Header = styled.div`
+const Footer = styled.div`
   position: relative;
   z-index: 1;
   display: flex;
@@ -21,7 +21,7 @@ const HiddenButton = styled.button`
   transition: opacity ease-in-out 0.2s;
 
   &:focus,
-  ${Header}:hover & {
+  ${Wrap}:hover & {
     opacity: 1;
   }
 `
@@ -32,27 +32,36 @@ const HealthInputs = styled.div`
 
 const HealthInput = styled.div`
   flex: 1 1 auto;
-  max-width: 30%;
+  max-width: 20%;
   overflow: hidden;
 
   text-align: center;
 
   ${InlineEdit} {
+    border-bottom-color: #fff;
     width: 100%;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
   }
 `
 
 const HealthText = styled.div`
-  text-align: center;
+  text-align: end;
   line-height: 27px; // matches height of the inputs
 `
 
 const Health = styled.div`
+  display: flex;
   padding: 0.5rem 2rem;
   background: tomato;
 
   font-size: 16px;
   color: white;
+
+  ${InlineEdit} {
+    color: #fff;
+  }
 
   ${HealthInputs} {
     display: none;
@@ -65,17 +74,7 @@ const Health = styled.div`
   &:hover ${HealthText} {
     display: none;
   }
-
-  ${InlineEdit} {
-    border-bottom-color: #fff;
-    color: #fff;
-    text-align: center;
-    font-size: 15px;
-  }
 `
-
-
-
 
 
 class Participant extends React.Component {
@@ -85,42 +84,27 @@ class Participant extends React.Component {
 
     return (
       <Wrap key={participant.id} style={{marginBottom: '1em'}}>
-        <Header>
-          <div style={{'flex': '1 1 auto'}}>
-            <label htmlFor="setName">Name:</label>
-
-            <InlineEdit
-              id="setName"
-              placeholder="setName"
-              value={participant.name}
-              onChange={(event) => this.props.setName({id: participant.id, name: event.target.value})}
-            />
-          </div>
-
-          <div style={{'flex': '1 1 auto'}}>
-            <label htmlFor="setStatus">Status:</label>
-
-            <InlineEdit
-              id="setStatus"
-              placeholder="none"
-              value={participant.status || ''}
-              onChange={(event) => this.props.setStatus({id: participant.id, status: event.target.value})}
-            />
-          </div>
-
-          <div>
-            <HiddenButton onClick={() => this.props.removeParticipantFromOrder({uuid: participant.id})}>
-              Delete
-            </HiddenButton>
-          </div>
-        </Header>
-
         <Health>
           <HealthText>
+            {participant.name}
+          </HealthText>
+
+          <HealthText style={{'flex': '1 1 auto'}}>
             {participant.hp} {participant.tempHp && `(${participant.tempHp})`} / {participant.maxHp}
           </HealthText>
 
           <HealthInputs>
+            <HealthInput>
+              <InlineEdit
+                id="setName"
+                placeholder="setName"
+                value={participant.name}
+                onChange={(event) => this.props.setName({id: participant.id, name: event.target.value})}
+              />
+            </HealthInput>
+
+            <HealthInput>:</HealthInput>
+
             <HealthInput>
               <InlineEdit
                 id="setCurrentHp"
@@ -141,7 +125,7 @@ class Participant extends React.Component {
               />
             </HealthInput>
 
-            <HealthInput>) /</HealthInput>
+            <HealthInput>)</HealthInput>
 
             <HealthInput>
               <InlineEdit
@@ -153,6 +137,25 @@ class Participant extends React.Component {
             </HealthInput>
           </HealthInputs>
         </Health>
+
+        <Footer>
+          <div style={{'flex': '1 1 auto'}}>
+            <label htmlFor="setStatus">Status:</label>
+
+            <InlineEdit
+              id="setStatus"
+              placeholder="none"
+              value={participant.status || ''}
+              onChange={(event) => this.props.setStatus({id: participant.id, status: event.target.value})}
+            />
+          </div>
+
+          <div>
+            <HiddenButton onClick={() => this.props.removeParticipantFromOrder({uuid: participant.id})}>
+              Delete
+            </HiddenButton>
+          </div>
+        </Footer>
 
         {/*}
         <div>
