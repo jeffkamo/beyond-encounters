@@ -16,11 +16,10 @@
     {
       "matches": ["https://www.dndbeyond.com/*"],
       "run_at": "document_end",
-//      "css": ["mystyles.css"],
       "js": ["content.js"]
     }
   ],
-  
+
   "permissions": [
     "tabs","<all_urls>",
     "storage"
