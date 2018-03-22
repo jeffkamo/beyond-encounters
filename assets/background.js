@@ -65,8 +65,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var logger = (0, _reduxLogger2.default)({
-	  level: 'info',
-	  collapsed: true
+	    level: 'info',
+	    collapsed: true
 	});
 
 	var middleware = [_reduxThunk2.default, logger];
@@ -74,23 +74,11 @@
 	var store = (0, _redux.compose)(_redux.applyMiddleware.apply(undefined, middleware))(_redux.createStore)(_reducers2.default);
 
 	(0, _reactChromeRedux.wrapStore)(store, {
-	  portName: 'example'
+	    portName: 'example'
 	});
 
-	// ////////////////////////////////////////////
-	// //Inject content Script on each tab change//
-	// ////////////////////////////////////////////
-	// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	//   console.log('content script injected')
-	//   chrome.tabs.executeScript(null, {file: "content.js"});
-	// }); 
-
-	/////////////////////////////////////////////////////
-	//Inject content script when first tab is activated//
-	///////////////////////////////////////////////////// 
 	chrome.tabs.onActivated.addListener(function (tabId, changeInfo, tab) {
-	  console.log('content script injected');
-	  chrome.tabs.executeScript(null, { file: "content.js" });
+	    chrome.tabs.executeScript(null, { file: "content.js" });
 	});
 
 	__webpack_require__(80);
@@ -4130,15 +4118,15 @@
 
 	var _addParticipant2 = _interopRequireDefault(_addParticipant);
 
-	var _removeParticipant = __webpack_require__(188);
+	var _removeParticipant = __webpack_require__(189);
 
 	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
 
-	var _editInitiative = __webpack_require__(189);
+	var _editInitiative = __webpack_require__(190);
 
 	var _editInitiative2 = _interopRequireDefault(_editInitiative);
 
-	var _addToOrder = __webpack_require__(190);
+	var _addToOrder = __webpack_require__(188);
 
 	var _addToOrder2 = _interopRequireDefault(_addToOrder);
 
@@ -4194,15 +4182,15 @@
 
 	var _saveCoords2 = _interopRequireDefault(_saveCoords);
 
-	var _removeCard = __webpack_require__(373);
+	var _removeCard = __webpack_require__(221);
 
 	var _removeCard2 = _interopRequireDefault(_removeCard);
 
-	var _dockCard = __webpack_require__(374);
+	var _dockCard = __webpack_require__(222);
 
 	var _dockCard2 = _interopRequireDefault(_dockCard);
 
-	var _undockCard = __webpack_require__(375);
+	var _undockCard = __webpack_require__(223);
 
 	var _undockCard2 = _interopRequireDefault(_undockCard);
 
@@ -4294,6 +4282,102 @@
 	    payload.init ? port.postMessage(controller.getState()) : payload.props ? controller.getSignal(payload.name)(payload.props) : console.error('should not end here');
 	  });
 	});
+	// =======
+	// import React from 'react'
+	// import {Container} from '@cerebral/react'
+	// import {Controller, Module} from 'cerebral'
+	// import Devtools from 'cerebral/devtools'
+	// import StorageModule from '@cerebral/storage'
+	// import PopupMenu from './components/PopupMenu'
+	//
+	// import addParticipant from './signals/addParticipant'
+	// import removeParticipant from './signals/removeParticipant'
+	// import editInitiative from './signals/editInitiative'
+	// import addToOrder from './signals/addToOrder'
+	// import removeOrderGroup from './signals/removeOrderGroup'
+	// import removeParticipantFromOrder from './signals/removeParticipantFromOrder'
+	// import setInitiative from './signals/setInitiative'
+	// import setOrderName from './signals/setOrderName'
+	// import setName from './signals/setName'
+	// import setMaxHp from './signals/setMaxHp'
+	// import setCurrentHp from './signals/setCurrentHp'
+	// import applyDamage from './signals/applyDamage'
+	// import applyHealing from './signals/applyHealing'
+	// import setTempHp from './signals/setTempHp'
+	// import setStatus from './signals/setStatus'
+	// import addBestiary from './signals/addBestiary'
+	//
+	// const storage = StorageModule({
+	//   target: localStorage,
+	//   json: true,
+	//   sync: {
+	//     'participants': 'participants',
+	//     'bestiary': 'bestiary',
+	//     'order': 'order',
+	//   },
+	// })
+	//
+	// const app = Module({
+	//   modules: {storage},
+	//   state: {
+	//     order: {},
+	//     participants: {},
+	//     bestiary: {'giant-poisonous-snake': {url: 'http://google.com/#'}}
+	//   },
+	//   signals: {
+	//     addToOrder,
+	//     removeOrderGroup,
+	//     removeParticipantFromOrder,
+	//     setInitiative,
+	//     setOrderName,
+	//     addParticipant,
+	//     removeParticipant,
+	//     editInitiative,
+	//     setName,
+	//     setMaxHp,
+	//     setCurrentHp,
+	//     applyDamage,
+	//     applyHealing,
+	//     setTempHp,
+	//     setStatus,
+	//     addBestiary,
+	//   }
+	// })
+	//
+	//
+	// const controller = Controller(app, {
+	//   devtools: Devtools({
+	//     host: 'localhost:8585',
+	//     https: false,
+	//     reconnect: true,
+	//     storeMutations: true,
+	//     bigComponentsWarning: 5,
+	//     warnStateProps: true,
+	//   })
+	// })
+	//
+	// window.CEREBRAL = controller
+	//
+	// const App = () => {
+	//   return (
+	//     <Container controller={controller}>
+	//       <PopupMenu/>
+	//     </Container>
+	//   )
+	// }
+	//
+	// window.Menu = App
+	//
+	// chrome.runtime.onMessage.addListener(
+	//   function (request, sender, sendResponse) {
+	//     console.log('inside event listner', request, sender, sendResponse)
+	//     const {initiative, dndBeyondId, name, hp, statBlockData} = request.msg
+	//
+	//     hp ? window.CEREBRAL.getSignal('addParticipant')({initiative, dndBeyondId, name, hp, statBlockData})
+	//       : window.CEREBRAL.getSignal('addBestiary')({dndBeyondId, statBlockData})
+	//   }
+	// )
+	// >>>>>>> 790d82da2a13d57491990c34c0db7d13944e691a
 
 /***/ }),
 /* 81 */
@@ -14718,7 +14802,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _templateObject = _taggedTemplateLiteral(['\n    position: absolute;\n\n    display: flex;\n    flex-direction: column;\n    flex: 1 1 auto;\n    max-width: 300px;\n    max-height: 400px;\n    margin-right: 4px;\n    border-radius: 1px;\n    overflow: hidden;\n\n    background-color: red;\n    box-shadow: 0 0 4px rgb(150, 150, 150);\n\n    pointer-events: initial;\n'], ['\n    position: absolute;\n\n    display: flex;\n    flex-direction: column;\n    flex: 1 1 auto;\n    max-width: 300px;\n    max-height: 400px;\n    margin-right: 4px;\n    border-radius: 1px;\n    overflow: hidden;\n\n    background-color: red;\n    box-shadow: 0 0 4px rgb(150, 150, 150);\n\n    pointer-events: initial;\n']),
+	var _templateObject = _taggedTemplateLiteral(['\n  border: 1px solid #e1e1e1;\n  background: #f1f1f1;\n  padding: 0.5em;\n'], ['\n  border: 1px solid #e1e1e1;\n  background: #f1f1f1;\n  padding: 0.5em;\n']),
 	    _templateObject2 = _taggedTemplateLiteral(['participants'], ['participants']),
 	    _templateObject3 = _taggedTemplateLiteral(['order'], ['order']),
 	    _templateObject4 = _taggedTemplateLiteral(['removeParticipant'], ['removeParticipant']),
@@ -14756,9 +14840,364 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); } // import React from 'react'
+	//
+	// import {connect} from '@cerebral/react'
+	// import {state, signal} from 'cerebral/tags'
+	//
+	// import styled, {css} from 'styled-components'
+	//
+	// const Div = styled.div`
+	//     position: absolute;
+	//
+	//     display: flex;
+	//     flex-direction: column;
+	//     flex: 1 1 auto;
+	//     max-width: 300px;
+	//     max-height: 400px;
+	//     margin-right: 4px;
+	//     border-radius: 1px;
+	//     overflow: hidden;
+	//
+	//     background-color: red;
+	//     box-shadow: 0 0 4px rgb(150, 150, 150);
+	//
+	//     pointer-events: initial;
+	// `
+	//
+	// export default connect({
+	//     participants: state`participants`,
+	//     order: state`order`,
+	//     removeParticipant: signal`removeParticipant`,
+	//     addToOrder: signal`addToOrder`,
+	//     removeOrderGroup: signal`removeOrderGroup`,
+	//     removeParticipantFromOrder: signal`removeParticipantFromOrder`,
+	//     setInitiative: signal`setInitiative`,
+	//     setOrderName: signal`setOrderName`,
+	//     setName: signal`setName`,
+	//     setMaxHp: signal`setMaxHp`,
+	//     setCurrentHp: signal`setCurrentHp`,
+	//     applyDamage: signal`applyDamage`,
+	//     applyHealing: signal`applyHealing`,
+	//     setTempHp: signal`setTempHp`,
+	//     setStatus: signal`setStatus`,
+	//     addBestiary: signal`addBestiary`,
+	//   },
+	//   class PopupMenu extends React.Component {
+	//     constructor(props) {
+	//       super(props)
+	//     }
+	//
+	//     render() {
+	//       const order = this.props.order
+	//       const divStyle = {width: '500px'}
+	//       return <div style={divStyle}>
+	//         {this.props.participants.map((item, index) => (
+	//           <div key={index}>
+	//             {item.name} |
+	//             {item.dndBeyondId} |
+	//             {item.hp} |
+	//             {item.initiative} |
+	//             {item.status} |
+	//             <button onClick={() => this.props.removeParticipant({id: item.id})}>REMOVE</button>
+	//             <button onClick={() => this.props.addToOrder({id: item.id})}>ADD TO ORDER</button>
+	//
+	//             <Div>Hello</Div>
+	//
+	//             <input placeholder="setName" value={item.name} onChange={(event) =>
+	//               this.props.setName({id: item.id, name: event.target.value})} />
+	//
+	//             <input placeholder="setMaxHp" value={item.maxHp | 0} onChange={(event) =>
+	//               this.props.setMaxHp({id: item.id, maxHp: event.target.value})} />
+	//
+	//             <input placeholder="setCurrentHp" value={item.currentHp | 0} onChange={(event) =>
+	//               this.props.setCurrentHp({id: item.id, currentHp: event.target.value})} />
+	//
+	//             <input type="number" placeholder="applyDamage" onChange={(event) =>
+	//               this.props.applyDamage({id: item.id, damage: event.target.value})} />
+	//
+	//             <input type="number" placeholder="applyHealing" onChange={(event) =>
+	//               this.props.applyHealing({id: item.id, heal: event.target.value})} />
+	//
+	//             <input placeholder="setTempHp" value={item.tempHp | 0} onChange={(event) =>
+	//               this.props.setTempHp({id: item.id, tempHp: event.target.value})} />
+	//
+	//             <input placeholder="setStatus" value={item.status} onChange={(event) =>
+	//               this.props.setStatus({id: item.id, status: event.target.value})} />
+	//           </div>
+	//         ))}
+	//         {Object.keys(order).map((key) => (
+	//           <div key={key}>
+	//             {key} |
+	//             {order[key].initiative} |
+	//             {order[key].name} |
+	//
+	//             {order[key].ids.map((item, index) => (
+	//               <span key={index}>{item}
+	//                 <button
+	//                   onClick={() => this.props.removeParticipantFromOrder({id: item})}>REMOVE participants from order</button>
+	//
+	//               </span>
+	//
+	//             ))}
+	//             <button onClick={() => this.props.removeOrderGroup({id: key})}>REMOVE ORDER</button>
+	//             <input value={order[key].initiative} onChange={(event) =>
+	//               this.props.setInitiative({id: key, initiative: event.target.value})}/>
+	//             <input value={key} onChange={(event) =>
+	//               this.props.setOrderName({id: key, name: event.target.value})}/>
+	//           </div>
+	//         ))}
+	//       </div>
+	//     }
+	//   }
+	// )
 
-	var Div = _styledComponents2.default.div(_templateObject);
+
+	var Group = _styledComponents2.default.div(_templateObject);
+
+	var PopupMenu = function (_React$Component) {
+	  _inherits(PopupMenu, _React$Component);
+
+	  function PopupMenu() {
+	    _classCallCheck(this, PopupMenu);
+
+	    return _possibleConstructorReturn(this, (PopupMenu.__proto__ || Object.getPrototypeOf(PopupMenu)).apply(this, arguments));
+	  }
+
+	  _createClass(PopupMenu, [{
+	    key: 'renderParticipant',
+	    value: function renderParticipant(participant) {
+	      var _this2 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        { key: participant.id, style: { marginBottom: '1em' } },
+	        _react2.default.createElement(
+	          'code',
+	          null,
+	          participant.dndBeyondId
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: function onClick() {
+	              return _this2.props.removeParticipantFromOrder({ uuid: participant.id });
+	            } },
+	          'Delete'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'setName' },
+	            'Name:'
+	          ),
+	          ' ',
+	          participant.name,
+	          _react2.default.createElement('input', { id: 'setName', placeholder: 'setName', value: participant.name, onChange: function onChange(event) {
+	              return _this2.props.setName({ id: participant.id, name: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'setCurrentHp' },
+	            'Current HP:'
+	          ),
+	          ' ',
+	          participant.hp,
+	          _react2.default.createElement('input', { id: 'setCurrentHp', placeholder: 'setCurrentHp', value: participant.currentHp | 0, onChange: function onChange(event) {
+	              return _this2.props.setCurrentHp({ id: participant.id, currentHp: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'setMaxHp' },
+	            'Max HP:'
+	          ),
+	          _react2.default.createElement('input', { id: 'setMaxHp', placeholder: 'setMaxHp', value: participant.maxHp | 0, onChange: function onChange(event) {
+	              return _this2.props.setMaxHp({ id: participant.id, maxHp: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'setTempHp' },
+	            'Temp HP:'
+	          ),
+	          _react2.default.createElement('input', { id: 'setTempHp', placeholder: 'setTempHp', value: participant.tempHp | 0, onChange: function onChange(event) {
+	              return _this2.props.setTempHp({ id: participant.id, tempHp: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'applyDamage' },
+	            'Dmg:'
+	          ),
+	          _react2.default.createElement('input', { id: 'applyDamage', type: 'number', placeholder: 'applyDamage', onChange: function onChange(event) {
+	              return _this2.props.applyDamage({ id: participant.id, damage: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'applyHealing' },
+	            'Heals:'
+	          ),
+	          _react2.default.createElement('input', { id: 'applyHealing', type: 'number', placeholder: 'applyHealing', onChange: function onChange(event) {
+	              return _this2.props.applyHealing({ id: participant.id, heal: event.target.value });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'setStatus' },
+	            'Status:'
+	          ),
+	          ' ',
+	          participant.status,
+	          _react2.default.createElement('input', { id: 'setStatus', placeholder: 'setStatus', value: participant.status, onChange: function onChange(event) {
+	              return _this2.props.setStatus({ id: participant.id, status: event.target.value });
+	            } })
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderParticipants',
+	    value: function renderParticipants() {
+	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+	      var participants = this.props.participants;
+
+	      participants = Object.keys(participants).filter(function (id) {
+	        return ids.indexOf(id) >= 0;
+	      }).map(function (id) {
+	        return participants[id];
+	      });
+
+	      return participants.length > 0 ? participants.map(this.renderParticipant.bind(this)) : [];
+	    }
+	  }, {
+	    key: 'renderOrderGroupParticipants',
+	    value: function renderOrderGroupParticipants() {
+	      var _this3 = this;
+
+	      var ids = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+	      return ids.map(function (uuid, index) {
+	        return _react2.default.createElement(
+	          'div',
+	          { key: uuid + '-' + index },
+	          _react2.default.createElement(
+	            'code',
+	            null,
+	            uuid
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: function onClick() {
+	                return _this3.props.removeParticipantFromOrder({ uuid: uuid });
+	              } },
+	            'Delete Participant'
+	          )
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'renderOrderGroups',
+	    value: function renderOrderGroups() {
+	      var _this4 = this;
+
+	      var order = this.props.order;
+	      order = Object.keys(order).map(function (id) {
+	        return order[id];
+	      });
+
+	      return order.map(function (group) {
+	        return _react2.default.createElement(
+	          Group,
+	          { key: group.id },
+	          _react2.default.createElement(
+	            'code',
+	            null,
+	            group.id
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: function onClick() {
+	                return _this4.props.removeOrderGroup({ id: group.id });
+	              } },
+	            'Delete Group'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'Group Name:'
+	            ),
+	            ' ',
+	            group.name,
+	            _react2.default.createElement('input', {
+	              id: 'orderName',
+	              value: group.name,
+	              onChange: function onChange(event) {
+	                return _this4.props.setOrderName({ id: group.id, name: event.target.value });
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              'Initiative:'
+	            ),
+	            ' ',
+	            group.initiative,
+	            _react2.default.createElement('input', {
+	              value: order.initiative,
+	              onChange: function onChange(event) {
+	                return _this4.props.setInitiative({ id: group.id, initiative: event.target.value });
+	              }
+	            })
+	          ),
+	          _this4.renderParticipants(group.ids)
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var divStyle = { width: '500px' };
+
+	      return _react2.default.createElement(
+	        'div',
+	        { style: divStyle },
+	        this.renderParticipants(),
+	        this.renderOrderGroups()
+	      );
+	    }
+	  }]);
+
+	  return PopupMenu;
+	}(_react2.default.Component);
 
 	exports.default = (0, _react3.connect)({
 	  participants: (0, _tags.state)(_templateObject2),
@@ -14777,127 +15216,7 @@
 	  setTempHp: (0, _tags.signal)(_templateObject15),
 	  setStatus: (0, _tags.signal)(_templateObject16),
 	  addBestiary: (0, _tags.signal)(_templateObject17)
-	}, function (_React$Component) {
-	  _inherits(PopupMenu, _React$Component);
-
-	  function PopupMenu(props) {
-	    _classCallCheck(this, PopupMenu);
-
-	    return _possibleConstructorReturn(this, (PopupMenu.__proto__ || Object.getPrototypeOf(PopupMenu)).call(this, props));
-	  }
-
-	  _createClass(PopupMenu, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var order = this.props.order;
-	      var divStyle = { width: '500px' };
-	      return _react2.default.createElement(
-	        'div',
-	        { style: divStyle },
-	        this.props.participants.map(function (item, index) {
-	          return _react2.default.createElement(
-	            'div',
-	            { key: index },
-	            item.name,
-	            ' |',
-	            item.dndBeyondId,
-	            ' |',
-	            item.hp,
-	            ' |',
-	            item.initiative,
-	            ' |',
-	            item.status,
-	            ' |',
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: function onClick() {
-	                  return _this2.props.removeParticipant({ id: item.id });
-	                } },
-	              'REMOVE'
-	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: function onClick() {
-	                  return _this2.props.addToOrder({ id: item.id });
-	                } },
-	              'ADD TO ORDER'
-	            ),
-	            _react2.default.createElement(
-	              Div,
-	              null,
-	              'Hello'
-	            ),
-	            _react2.default.createElement('input', { placeholder: 'setName', value: item.name, onChange: function onChange(event) {
-	                return _this2.props.setName({ id: item.id, name: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { placeholder: 'setMaxHp', value: item.maxHp | 0, onChange: function onChange(event) {
-	                return _this2.props.setMaxHp({ id: item.id, maxHp: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { placeholder: 'setCurrentHp', value: item.currentHp | 0, onChange: function onChange(event) {
-	                return _this2.props.setCurrentHp({ id: item.id, currentHp: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { type: 'number', placeholder: 'applyDamage', onChange: function onChange(event) {
-	                return _this2.props.applyDamage({ id: item.id, damage: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { type: 'number', placeholder: 'applyHealing', onChange: function onChange(event) {
-	                return _this2.props.applyHealing({ id: item.id, heal: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { placeholder: 'setTempHp', value: item.tempHp | 0, onChange: function onChange(event) {
-	                return _this2.props.setTempHp({ id: item.id, tempHp: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { placeholder: 'setStatus', value: item.status, onChange: function onChange(event) {
-	                return _this2.props.setStatus({ id: item.id, status: event.target.value });
-	              } })
-	          );
-	        }),
-	        Object.keys(order).map(function (key) {
-	          return _react2.default.createElement(
-	            'div',
-	            { key: key },
-	            key,
-	            ' |',
-	            order[key].initiative,
-	            ' |',
-	            order[key].name,
-	            ' |',
-	            order[key].ids.map(function (item, index) {
-	              return _react2.default.createElement(
-	                'span',
-	                { key: index },
-	                item,
-	                _react2.default.createElement(
-	                  'button',
-	                  {
-	                    onClick: function onClick() {
-	                      return _this2.props.removeParticipantFromOrder({ id: item });
-	                    } },
-	                  'REMOVE participants from order'
-	                )
-	              );
-	            }),
-	            _react2.default.createElement(
-	              'button',
-	              { onClick: function onClick() {
-	                  return _this2.props.removeOrderGroup({ id: key });
-	                } },
-	              'REMOVE ORDER'
-	            ),
-	            _react2.default.createElement('input', { value: order[key].initiative, onChange: function onChange(event) {
-	                return _this2.props.setInitiative({ id: key, initiative: event.target.value });
-	              } }),
-	            _react2.default.createElement('input', { value: key, onChange: function onChange(event) {
-	                return _this2.props.setOrderName({ id: key, name: event.target.value });
-	              } })
-	          );
-	        })
-	      );
-	    }
-	  }]);
-
-	  return PopupMenu;
-	}(_react2.default.Component));
+	}, PopupMenu);
 
 /***/ }),
 /* 165 */
@@ -18752,6 +19071,10 @@
 
 	var _addToCards2 = _interopRequireDefault(_addToCards);
 
+	var _addToOrder = __webpack_require__(188);
+
+	var _addToOrder2 = _interopRequireDefault(_addToOrder);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var uuidv4 = __webpack_require__(173);
@@ -18759,14 +19082,21 @@
 	  var state = _ref.state,
 	      props = _ref.props;
 
-	  state.push('participants', {
-	    id: uuidv4(),
+	  var uuid = uuidv4();
+	  var participants = state.get('participants');
+	  participants[uuid] = {
+	    id: uuid,
 	    dndBeyondId: props.dndBeyondId,
 	    name: props.dndBeyondId,
 	    initiative: props.initiative,
 	    hp: props.hp
-	  });
-	}, _addBestiary2.default, _addToCards2.default];
+
+	    // Add participant!
+	  };state.set('participants', participants);
+
+	  // This is needed in order to add paricipant to the Order group
+	  return participants[uuid];
+	}, _addBestiary2.default, _addToCards2.default, _addToOrder2.default];
 
 /***/ }),
 /* 172 */
@@ -19429,50 +19759,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = [function removeParticipant(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-
-	  var participants = state.get('participants');
-	  participants = participants.filter(function (_ref2) {
-	    var id = _ref2.id;
-	    return props.id !== id;
-	  });
-	  state.set('participants', participants);
-	}];
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = [function addInitiative(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-	  var initiative = props.initiative,
-	      id = props.id;
-
-	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].initiative = initiative;
-	  state.set('participants', participants);
-	}];
-
-/***/ }),
-/* 190 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -19483,12 +19769,10 @@
 
 	  var order = state.get('order');
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  var selectedParticipant = participants[foundIndex];
+	  var selectedParticipant = participants[id];
 
 	  order[selectedParticipant.dndBeyondId] ? order[selectedParticipant.dndBeyondId].ids.push(id) : order[selectedParticipant.dndBeyondId] = {
+	    id: selectedParticipant.dndBeyondId,
 	    ids: [id],
 	    name: selectedParticipant.name,
 	    initiative: 0
@@ -19505,6 +19789,50 @@
 	}
 
 /***/ }),
+/* 189 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function removeParticipant(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+
+	  var participants = state.get('participants');
+
+	  Object.keys(participants).forEach(function (id) {
+	    if (id === (props.id || props.uuid)) {
+	      delete participants[id];
+	    }
+	  });
+
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = [function addInitiative(_ref) {
+	  var state = _ref.state,
+	      props = _ref.props;
+	  var initiative = props.initiative,
+	      id = props.id;
+
+	  var participants = state.get('participants');
+	  participants[id].initiative = initiative;
+	  state.set('participants', participants);
+	}];
+
+/***/ }),
 /* 191 */
 /***/ (function(module, exports) {
 
@@ -19518,8 +19846,25 @@
 	      props = _ref.props;
 
 	  var order = state.get('order');
+	  var ids = order[props.id].ids;
+
 	  delete order[props.id];
+
 	  state.set('order', order);
+
+	  // This is needed, so we can delete the order group's participants
+	  return { ids: ids };
+	}, function removeParticipants(_ref2) {
+	  var state = _ref2.state,
+	      props = _ref2.props;
+
+	  var participants = state.get('participants');
+
+	  props.ids.forEach(function (id) {
+	    delete participants[id];
+	  });
+
+	  state.set('participants', participants);
 	}];
 
 /***/ }),
@@ -19531,8 +19876,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var uuidv4 = __webpack_require__(173);
 
+	var _removeParticipant = __webpack_require__(189);
+
+	var _removeParticipant2 = _interopRequireDefault(_removeParticipant);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var uuidv4 = __webpack_require__(173);
 	exports.default = [function removeParticipantFromOrder(_ref) {
 	  var state = _ref.state,
 	      props = _ref.props;
@@ -19540,13 +19891,13 @@
 	  var order = state.get('order');
 
 	  Object.keys(order).forEach(function (orderKey) {
-	    order[orderKey].ids = order[orderKey].ids.filter(function (id) {
-	      return id !== props.id;
+	    order[orderKey].ids = order[orderKey].ids.filter(function (uuid) {
+	      return uuid !== props.uuid;
 	    });
 	  });
 
 	  state.set('order', order);
-	}];
+	}, _removeParticipant2.default];
 
 /***/ }),
 /* 193 */
@@ -20298,24 +20649,25 @@
 
 /***/ }),
 /* 212 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = [function setOrderName(_ref) {
-	  var state = _ref.state,
-	      props = _ref.props;
-	  var id = props.id,
-	      name = props.name;
 
-	  var order = state.get('order');
-	  order[name] = Object.assign({}, order[id]);
-	  delete order[id];
-	  state.set('order', order);
-	}];
+	var _templateObject = _taggedTemplateLiteral(['order.', '.name'], ['order.', '.name']),
+	    _templateObject2 = _taggedTemplateLiteral(['id'], ['id']),
+	    _templateObject3 = _taggedTemplateLiteral(['name'], ['name']);
+
+	var _operators = __webpack_require__(194);
+
+	var _tags = __webpack_require__(125);
+
+	function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+	exports.default = [(0, _operators.set)((0, _tags.state)(_templateObject, (0, _tags.props)(_templateObject2)), (0, _tags.props)(_templateObject3))];
 
 /***/ }),
 /* 213 */
@@ -20334,10 +20686,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].name = props.name;
+	  participants[id].name = props.name;
 	  state.set('participants', participants);
 	}];
 
@@ -20358,10 +20707,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].maxHp = parseInt(props.maxHp);
+	  participants[id].maxHp = parseInt(props.maxHp);
 	  state.set('participants', participants);
 	}];
 
@@ -20382,10 +20728,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].currentHp = parseInt(props.currentHp);
+	  participants[id].currentHp = parseInt(props.currentHp);
 	  state.set('participants', participants);
 	}];
 
@@ -20406,10 +20749,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  state.increment('participants.' + foundIndex + '.currentHp', -Math.abs(parseInt(props.damage)));
+	  state.increment('participants.' + id + '.hp', -Math.abs(parseInt(props.damage)));
 	}];
 
 /***/ }),
@@ -20429,10 +20769,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  state.increment('participants.' + foundIndex + '.currentHp', +parseInt(props.heal));
+	  state.increment('participants.' + id + '.hp', +parseInt(props.heal));
 	}];
 
 /***/ }),
@@ -20450,10 +20787,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].tempHp = props.tempHp;
+	  participants[id].tempHp = props.tempHp;
 	  state.set('participants', participants);
 	}];
 
@@ -20474,10 +20808,7 @@
 
 	  var id = props.id;
 	  var participants = state.get('participants');
-	  var foundIndex = participants.findIndex(function (participant) {
-	    return participant.id === id;
-	  });
-	  participants[foundIndex].status = props.status;
+	  participants[id].status = props.status;
 	  state.set('participants', participants);
 	}];
 
@@ -20499,159 +20830,7 @@
 	}];
 
 /***/ }),
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */,
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */,
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
-/* 338 */,
-/* 339 */,
-/* 340 */,
-/* 341 */,
-/* 342 */,
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */,
-/* 347 */,
-/* 348 */,
-/* 349 */,
-/* 350 */,
-/* 351 */,
-/* 352 */,
-/* 353 */,
-/* 354 */,
-/* 355 */,
-/* 356 */,
-/* 357 */,
-/* 358 */,
-/* 359 */,
-/* 360 */,
-/* 361 */,
-/* 362 */,
-/* 363 */,
-/* 364 */,
-/* 365 */,
-/* 366 */,
-/* 367 */,
-/* 368 */,
-/* 369 */,
-/* 370 */,
-/* 371 */,
-/* 372 */,
-/* 373 */
+/* 221 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20669,7 +20848,7 @@
 	}];
 
 /***/ }),
-/* 374 */
+/* 222 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -20687,7 +20866,7 @@
 	}];
 
 /***/ }),
-/* 375 */
+/* 223 */
 /***/ (function(module, exports) {
 
 	'use strict';

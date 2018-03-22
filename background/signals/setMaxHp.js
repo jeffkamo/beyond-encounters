@@ -4,8 +4,7 @@ export default [
   function setMaxHp({state, props}) {
     const id = props.id
     let participants = state.get('participants')
-    const foundIndex = participants.findIndex(participant => participant.id === id)
-    participants[foundIndex].maxHp = parseInt(props.maxHp)
+    participants[id].maxHp = parseInt(props.maxHp)
     state.set('participants', participants)
   }
 ]
