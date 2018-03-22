@@ -1,5 +1,4 @@
-const uuidv4 = require('uuid/v4')
-import { when, set, push } from 'cerebral/operators'
+import { set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
 

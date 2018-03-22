@@ -1,1 +1,10 @@
-const uuidv4 = require('uuid/v4')import {httpGet} from '@cerebral/http/operators'export default [  function addToCards({state, props}) {    state.set('cards.' + props.dndBeyondId, {      x: 0,      y: 0,      html: props.statBlockData,      docked: false,    })  },  function getHtmlFromToolTipEndPoint({http}) {  }]
+export default [
+  function addToCards({state, props}) {
+    state.set('cards.' + props.dndBeyondId, {
+      x: 0,
+      y: 0,
+      html: props.statBlockData,
+      docked: false,
+    })
+  }
+]

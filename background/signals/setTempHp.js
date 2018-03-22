@@ -1,4 +1,3 @@
-
 export default [
   function setTempHp({state, props}) {
     const id = props.id
