@@ -1,5 +1,7 @@
 require('./controller')
 
+const controller = window.CEREBRAL
+
 chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
   chrome.tabs.executeScript(null, {file: "content.js"});
 });
