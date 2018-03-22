@@ -1,46 +1,23 @@
-import {createStore, compose, applyMiddleware} from 'redux';
-import rootReducer from './reducers';
-import createLogger from 'redux-logger';
-import thunk from 'redux-thunk';
-import { alias, wrapStore } from 'react-chrome-redux';
+require('./controller')
 
-const logger = createLogger({
-    level: 'info',
-    collapsed: true
-});
+const controller = window.CEREBRAL
 
-
-const middleware = [  thunk, logger];
-
-
-const store  = compose(
-    applyMiddleware(...middleware)
-)(createStore)(rootReducer);
-
-
-wrapStore(store, {
-  portName: 'example'
-});
-
-
-
-// ////////////////////////////////////////////
-// //Inject content Script on each tab change//
-// ////////////////////////////////////////////
-// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-//   console.log('content script injected')
-//   chrome.tabs.executeScript(null, {file: "content.js"});
-// });
-
-/////////////////////////////////////////////////////
-//Inject content script when first tab is activated//
-/////////////////////////////////////////////////////
 chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
-  console.log('content script injected')
   chrome.tabs.executeScript(null, {file: "content.js"});
 });
 
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    const { initiative, dndBeyondId, name, hp, statBlockData } = request.msg
+    hp ? window.CEREBRAL.getSignal('addParticipant')({ initiative, dndBeyondId, name, hp, statBlockData })
+      : window.CEREBRAL.getSignal('addBestiary')({ dndBeyondId, statBlockData })
+  }
+)
 
-
-
-require('./cerebralstuff')
+chrome.runtime.onConnect.addListener(function (port) {
+  window.PORT = port
+  port.onMessage.addListener(function (payload) {
+    payload.init ? port.postMessage(controller.getState())
+      : payload.props ? controller.getSignal(payload.name)(payload.props) : console.error('should not end here')
+  })
+})

@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4')
 import addBestiary from './addBestiary'
+import addToCards from './addToCards'
 import addToOrder from './addToOrder'
 
 export default [
@@ -21,5 +22,6 @@ export default [
     return participants[uuid]
   },
   addBestiary,
+  addToCards,
   addToOrder
 ]

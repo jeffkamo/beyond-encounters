@@ -1,10 +1,9 @@
 import React from 'react'
-import {Container} from '@cerebral/react'
-import {Controller, Module} from 'cerebral'
+import { Container } from '@cerebral/react'
+import { Controller, Module } from 'cerebral'
 import Devtools from 'cerebral/devtools'
 import StorageModule from '@cerebral/storage'
 import PopupMenu from './components/PopupMenu'
-
 import addParticipant from './signals/addParticipant'
 import removeParticipant from './signals/removeParticipant'
 import editInitiative from './signals/editInitiative'
@@ -21,11 +20,16 @@ import applyHealing from './signals/applyHealing'
 import setTempHp from './signals/setTempHp'
 import setStatus from './signals/setStatus'
 import addBestiary from './signals/addBestiary'
+import saveCoords from './signals/saveCoords'
+import removeCard from './signals/removeCard'
+import dockCard from './signals/dockCard'
+import undockCard from './signals/undockCard'
 
 const storage = StorageModule({
   target: localStorage,
   json: true,
   sync: {
+    'cards': 'cards',
     'participants': 'participants',
     'bestiary': 'bestiary',
     'order': 'order',
@@ -33,13 +37,14 @@ const storage = StorageModule({
 })
 
 const app = Module({
-  modules: {storage},
+  modules: { storage },
   state: {
     order: {},
-    participants: {},
-    bestiary: {'giant-poisonous-snake': {url: 'http://google.com/#'}}
+    participants: [],
+    bestiary: { 'giant-poisonous-snake': { url: 'http://google.com/#' } }
   },
   signals: {
+    saveCoords,
     addToOrder,
     removeOrderGroup,
     removeParticipantFromOrder,
@@ -56,9 +61,11 @@ const app = Module({
     setTempHp,
     setStatus,
     addBestiary,
+    removeCard,
+    dockCard,
+    undockCard,
   }
 })
-
 
 const controller = Controller(app, {
   devtools: Devtools({
@@ -69,6 +76,10 @@ const controller = Controller(app, {
     bigComponentsWarning: 5,
     warnStateProps: true,
   })
+})
+
+controller.on('mutation', (mutation) => {
+  window.PORT.postMessage(controller.getState())
 })
 
 window.CEREBRAL = controller
@@ -82,13 +93,3 @@ const App = () => {
 }
 
 window.Menu = App
-
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    console.log('inside event listner', request, sender, sendResponse)
-    const {initiative, dndBeyondId, name, hp, statBlockData} = request.msg
-
-    hp ? window.CEREBRAL.getSignal('addParticipant')({initiative, dndBeyondId, name, hp, statBlockData})
-      : window.CEREBRAL.getSignal('addBestiary')({dndBeyondId, statBlockData})
-  }
-)

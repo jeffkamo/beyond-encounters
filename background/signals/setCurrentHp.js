@@ -1,5 +1,3 @@
-const uuidv4 = require('uuid/v4')
-
 export default [
   function setCurrentHp({state, props}) {
     const id = props.id
