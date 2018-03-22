@@ -11,7 +11,15 @@
 
   },
   "background": {"scripts": ["background.js"]},
-  
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.dndbeyond.com/*"],
+      "run_at": "document_end",
+      "js": ["content.js"]
+    }
+  ],
+
   "permissions": [
     "tabs","<all_urls>",
     "storage"

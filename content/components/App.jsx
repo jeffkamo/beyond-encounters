@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import styled from 'styled-components';
-
-import Card from './card.jsx'
-import Example from './example.jsx'
+import React from 'react'
+import styled from 'styled-components'
+import Draggable from 'react-draggable'
+import { state, signal } from 'cerebral/tags'
+import { connect } from '@cerebral/react'
+import dockedCards from '../computes/dockedCards'
+import undockedCards from '../computes/undockedCards'
 
 const Dashboard = styled.div`
     position: fixed;
@@ -20,7 +21,6 @@ const Dashboard = styled.div`
 
     pointer-events: none;
 `
-
 const DragViewPort = styled.div`
     flex: 1 1 auto;
     width: 100%;
@@ -28,8 +28,7 @@ const DragViewPort = styled.div`
     padding: 4px;
 
     pointer-events: none;
-`;
-
+`
 const Dock = styled.div`
     display: flex;
     flex: 0 0 auto;
@@ -42,83 +41,110 @@ const Dock = styled.div`
     div {
         position: relative;
     }
-`;
+`
+const Backdrop = styled.div`
+    position: absolute;
 
-class App extends Component {
-  collapseCard(card) {
-    return () => {
-      this.props.dispatch({type: 'REMOVE_FROM_DRAG_PORT', card})
-      this.props.dispatch({type: 'ADD_INTO_DOCK', card})
-    }
-  }
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    max-width: 300px;
+    max-height: 400px;
+    margin-right: 4px;
+    border-radius: 1px;
+    overflow: hidden;
 
-  expandCard(card) {
-    return () => {
-      this.props.dispatch({type: 'REMOVE_FROM_DOCK', card})
-      this.props.dispatch({type: 'ADD_INTO_DRAG_PORT', card})
-    }
-  }
+    background-color: #f8f3d4;
+    box-shadow: 0 0 4px rgb(150, 150, 150);
 
-  renderDragPort() {
-    const {cards, dragPort} = this.props
+    pointer-events: initial;
+`
+const Header = styled.div`
+    display: flex;
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    font-weight: bold;
+`
+const Title = styled.button`
+    flex: 1 1 auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
 
-    return dragPort && dragPort.map((card, idx) => {
-      const collapse = this.collapseCard(card)
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
+    background-color: transparent;
+`
+export default connect({
+    cards: state`cards`,
+    runSignal: signal`runSignal`,
+    dockedCards,
+    undockedCards
+  },
+  class AppComponent extends React.Component {
+    render() {
+      const { undockedCards, dockedCards, runSignal } = this.props
       return (
-        <Card
-          buttonText="_"
-          card={card}
-          title={cards[card].title}
-          key={`card-${idx}`}
-          buttonHandler={collapse}
-        >
-            <Example />
-        </Card>
-      )
-    })
-  }
-
-  renderDock() {
-    const {cards, dock} = this.props
-
-    return dock && dock.map((card, idx) => {
-      const expand = this.expandCard(card)
-
-      return (
-        <Card
-          card={card}
-          disabled
-          expandable
-          key={`card-${idx}`}
-          title={cards[card].title}
-          titleHandler={expand}
-        />
-      )
-    })
-  }
-
-  render() {
-    return (
-      <Dashboard>
+        <Dashboard>
           <DragViewPort className="app__drag-view-port">
-            {this.renderDragPort()}
+            {undockedCards && undockedCards.map((card) => (
+              <Draggable key={card.id}
+                         defaultPosition={{
+                           x: card.x, y: card.y
+                         }}
+                         onStop={(event) => runSignal({
+                           name: 'saveCoords',
+                           props: {
+                             key: card.id,
+                             x: event.screenX,
+                             y: event.screenY
+                           }
+                         })}
+                         bounds=".app__drag-view-port">
+                <Backdrop>
+                  <div>
+                    <div className="handle">{card.id}
+                      <button
+                        onClick={(event) => runSignal({
+                          name: 'removeCard',
+                          props: {
+                            id: card.id,
+                          }
+                        })}>Remove Card
+                      </button>
+                      <button
+                        onClick={(event) => runSignal({
+                          name: 'dockCard',
+                          props: {
+                            id: card.id,
+                          }
+                        })}>Dock Card
+                      </button>
+                    </div>
+                    <div dangerouslySetInnerHTML={{ __html: card.html }}/>
+                    <div>{card.html}</div>
+                  </div>
+                </Backdrop>
+              </Draggable>
+            ))}
           </DragViewPort>
-
           <Dock>
-            {this.renderDock()}
+            {dockedCards && dockedCards.map((card) => (
+              <Backdrop key={card.id}>
+                <Header onClick={(event) => runSignal({ name: 'undockCard', props: { id: card.id } })}>
+                  <Title>
+                    {card.id}
+                  </Title>
+                </Header>
+              </Backdrop>
+            ))}
           </Dock>
-      </Dashboard>
-    );
+        </Dashboard>
+      )
+    }
   }
-}
+)
 
-const mapStateToProps = (state) => {
-  return {
-    cards: state.cards,
-    dock: state.dock,
-    dragPort: state.dragPort,
-  };
-};
-
-export default connect(mapStateToProps)(App);
