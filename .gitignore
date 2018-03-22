@@ -1,2 +1,5 @@
 /node_modules
 .idea
+assets/background.js
+assets/content.js
+assets/popup.js
