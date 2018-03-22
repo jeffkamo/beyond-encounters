@@ -1,4 +1,3 @@
-// import React from 'react'
 import ReactDOM from 'react-dom'
 
 // Use a mutation observer to catch changes to the Background's style tag.
